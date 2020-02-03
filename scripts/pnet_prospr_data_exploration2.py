@@ -10,15 +10,15 @@ datasets and prospr.
 """
 #%%
 import numpy as np
+import pandas as pd
 import ast
 
 #%% PROSPR VS PROTEIN NET 12
-with open('../steps/shared_domains') as f:
+with open('../steps/shared_domains12') as f:
     shared = ast.literal_eval( f.read())
     
 del f
 
-#%%
 domains = np.array([])
 
 for i in range(len(shared)):
@@ -26,26 +26,34 @@ for i in range(len(shared)):
     
 unique_domains12 = np.unique(domains)
 #  unique domains
+#%%
+#pd.DataFrame(unique_domains12).to_csv('../steps/prospr_proteinnet12_unique_domains')
 
-
-with open('../steps/propspr_pnet12_unique_domains', 'w') as f:
-    f.write(str(unique_domains))
+#%%
+# get names
+#dfnames = np.array([])
+#for i in range(len(shared)):
+#    dfname = np.repeat(list(shared.keys())[i], shared[list(shared.keys())[i]][0])
+#    dfnames = np.concatenate([dfnames, dfname])
     
+#%%
+#prospr_pnet12_df = pd.DataFrame({'DF_name':dfnames, 'Domain':domains})
+#%%
+#prospr_pnet12_df.to_csv('../steps/prospr_vs_proteinnet12_shared_domains.csv')
 
 #%% PROSPR vs PROTEIN NET 11
 with open('../steps/shared_domains11') as f:
-    shared = ast.literal_eval( f.read())
+    shared11 = ast.literal_eval(f.read())
     
 del f
 
-domains = np.array([])
+domains11 = np.array([])
 #shared[list(shared.keys())[0]][i]
-for i in range(len(shared)):
-    domains = np.concatenate([domains, shared[list(shared.keys())[i]][1]])
+for i in range(len(shared11)):
+    domains11 = np.concatenate([domains11, shared11[list(shared11.keys())[i]][1]])
     
-unique_domains11 = np.unique(domains)
+unique_domains11 = np.unique(domains11)
 #  unique domains
+#%%
+print(np.unique(np.concatenate([unique_domains11, unique_domains12])).shape)
 
-with open('../steps/propspr_pnet12_unique_domains', 'w') as f:
-    f.write(str(unique_domains))
-    

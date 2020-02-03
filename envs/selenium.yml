@@ -1,0 +1,9 @@
+name: selenium
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - selenium
+  - geckodriver
+  - spyder
+

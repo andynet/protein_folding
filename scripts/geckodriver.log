@@ -1,0 +1,1158 @@
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580567387086	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile8cHPRM"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+1580567392658	Marionette	INFO	Listening on port 34304
+1580567392701	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+JavaScript error: resource://devtools/shared/base-loader.js -> resource://devtools/client/framework/toolbox.js, line 1328: TypeError: currentPanel is undefined
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580571429876	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileIjlgZU"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+1580571434194	Marionette	INFO	Listening on port 46289
+1580571434288	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580571737655	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilexqmqAp"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+1580571741630	Marionette	INFO	Listening on port 34248
+1580571741671	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580571841201	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileUzU92x"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+1580571843712	Marionette	INFO	Listening on port 43905
+1580571843827	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580572725412	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileLQWf5t"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580572727024	Marionette	INFO	Listening on port 39661
+1580572727138	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580572775132	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilewvhona"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580572776584	Marionette	INFO	Listening on port 35191
+1580572776642	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580572820963	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileS4sYTp"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580572822455	Marionette	INFO	Listening on port 42588
+1580572822487	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+
+(firefox:48555): GLib-GObject-CRITICAL **: 17:01:06.854: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580572944259	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileCqI1gY"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580572945823	Marionette	INFO	Listening on port 36131
+1580572945870	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+
+(firefox:49651): GLib-GObject-CRITICAL **: 17:03:11.661: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580573213458	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile6964fo"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580573215066	Marionette	INFO	Listening on port 37174
+1580573215181	Marionette	WARN	TLS certificate errors will be ignored for this session
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580573617673	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileMwVxNk"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580573619292	Marionette	INFO	Listening on port 35364
+1580573619381	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+
+(firefox:54295): GLib-GObject-CRITICAL **: 17:14:35.289: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580573969596	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileIfKC3V"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580573971226	Marionette	INFO	Listening on port 33664
+1580573971308	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+
+(firefox:57786): GLib-GObject-CRITICAL **: 17:20:04.071: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580574279664	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileSoSaWm"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580574281247	Marionette	INFO	Listening on port 46688
+1580574281279	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+
+(firefox:60076): GLib-GObject-CRITICAL **: 17:25:25.385: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580574624097	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileyq7wD8"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580574625789	Marionette	INFO	Listening on port 44959
+1580574625811	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580574810858	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilefQtmub"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580574969203	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileEfwFEU"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580574970853	Marionette	INFO	Listening on port 35298
+1580574970918	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580575083230	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile9zKSZY"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580575085067	Marionette	INFO	Listening on port 34209
+1580575085162	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 2ms; not stored in cache (too small to benefit))
+
+(firefox:22545): GLib-GObject-CRITICAL **: 17:38:29.835: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580575747579	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilesL7GDs"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580575749229	Marionette	INFO	Listening on port 38230
+1580575749287	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580575813851	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileOGVLd2"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580575815522	Marionette	INFO	Listening on port 41818
+1580575815560	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580575823081	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile4asHfk"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580575824729	Marionette	INFO	Listening on port 44479
+1580575825259	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580575867443	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileYAaQiC"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580575869110	Marionette	INFO	Listening on port 36371
+1580575869152	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:51:38.870: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:51:46.804: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:51:53.851: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:10.016: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:12.583: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:16.517: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:17.434: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:21.507: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:25.336: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:32.937: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:39.346: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:45.734: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:52:59.704: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:03.552: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:03.881: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:04.777: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:06.677: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:07.040: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:08.273: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:13.233: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:18.972: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:23.937: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:35.650: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:45.315: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:46.888: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:47.745: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:53:53.703: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:54:01.086: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:54:08.219: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:54:19.765: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:54:25.628: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:41537): GLib-GObject-CRITICAL **: 17:54:27.517: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+1580576199943	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileaUbxQz"
+Failed to open connection to "session" message bus: Using X11 for dbus-daemon autolaunch was disabled at compile time, set your DBUS_SESSION_BUS_ADDRESS instead
+Running without a11y support!
+*** You are running in headless mode.
+1580576201675	Marionette	INFO	Listening on port 45681
+1580576201759	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://cdn01.boxcdn.net/enduser/preview-components~uploads-manager-enduser.66849545d0.js, line 0: Successfully compiled asm.js code (total compilation time 1ms; not stored in cache (too small to benefit))
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:12.607: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:18.433: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:26.414: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:40.063: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:41.541: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:45.070: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:47.707: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:51.026: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:57:52.488: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:05.633: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:07.389: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:17.958: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:27.411: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:33.230: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:34.508: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:34.618: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:36.361: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:36.578: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:40.157: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:46.894: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:52.168: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:58:57.111: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:08.035: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:18.812: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:18.958: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:21.042: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:26.994: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:34.196: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:41.330: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:51.822: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:57.218: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 17:59:58.071: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:09.107: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:15.099: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:15.521: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:38.265: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:42.132: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:42.308: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:45.635: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:51.325: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:52.256: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:00:57.407: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:03.199: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:15.688: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:16.840: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:22.703: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:29.988: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:37.809: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:39.488: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:45.755: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:01:50.595: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:01.899: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:07.519: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:08.004: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:15.154: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:20.750: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:28.914: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:33.602: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:45.324: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:53.862: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:53.868: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:02:57.253: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:04.207: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:08.343: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:15.142: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:22.471: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:25.945: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:40.615: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:43.657: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:44.789: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:51.465: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:03:59.380: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:03.564: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:15.671: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:22.060: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:36.288: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:38.712: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:39.189: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:45.100: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:49.378: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:04:50.627: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:06.120: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:07.541: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:08.022: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:23.878: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:33.011: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:33.355: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:34.782: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:40.879: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:50.136: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:51.918: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:05:58.438: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:06:01.926: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:06:07.600: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:06:20.642: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:06:21.599: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:06:25.598: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:06:35.325: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:06:48.730: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:06:52.050: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:06.443: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:11.748: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:14.067: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:25.718: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:34.497: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:43.551: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:48.608: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:49.889: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:07:55.253: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:01.557: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:12.232: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:18.279: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:19.716: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:20.320: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:21.020: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:26.231: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:27.281: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:30.823: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:48.887: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:50.975: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:51.627: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:08:54.292: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:02.624: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:12.400: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:17.114: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:24.406: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:33.359: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:37.250: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:37.756: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:41.699: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:09:48.355: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:00.563: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:03.875: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:06.161: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:14.163: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:23.570: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:30.150: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:35.955: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:36.997: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:43.187: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:49.698: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:10:55.100: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:03.727: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:15.150: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:18.869: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:19.274: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:25.931: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:29.127: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:35.072: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:41.952: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:11:56.428: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:00.657: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:07.325: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:08.294: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:12.909: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:27.073: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:29.569: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:37.239: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:44.545: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:44.598: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:48.242: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:12:54.273: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:02.799: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:05.986: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:18.122: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:28.629: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:37.465: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:37.579: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:42.750: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:45.617: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:48.446: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:13:57.153: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:02.355: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:06.299: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:12.495: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:18.240: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:33.599: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:36.582: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:36.715: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:43.683: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:51.222: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:14:56.161: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:06.473: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:06.797: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:12.853: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:18.583: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:31.836: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:31.935: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:38.553: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:49.530: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:50.567: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:15:55.476: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:02.110: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:14.760: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:15.739: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:19.474: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:26.523: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:31.331: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:40.064: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:45.083: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:51.894: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:16:56.016: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:17:05.912: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:17:13.753: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:17:25.852: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:17:26.337: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:17:38.836: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:17:38.935: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:17:46.459: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:17:51.950: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:01.858: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:03.429: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:11.147: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:16.963: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:27.911: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:29.255: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:35.220: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:38.561: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:52.416: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:54.310: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:18:57.255: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:02.838: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:09.758: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:15.331: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:26.779: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:27.474: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:33.769: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:47.206: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:47.682: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:19:52.550: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:06.739: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:10.712: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:12.923: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:17.134: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:23.582: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:38.348: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:43.110: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:45.463: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:48.089: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:20:59.270: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:01.198: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:19.198: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:23.060: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:24.443: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:30.325: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:38.131: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:38.463: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:42.733: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:21:54.820: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:03.157: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:06.573: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:07.155: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:13.037: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:18.714: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:32.487: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:40.515: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:45.231: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:50.540: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:50.908: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:22:55.023: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:02.579: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:09.669: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:13.826: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:19.320: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:26.182: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:33.487: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:38.196: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:43.332: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:49.713: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:23:56.092: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:06.813: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:13.580: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:21.439: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:25.994: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:38.822: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:44.094: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:45.205: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:56.391: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:24:56.757: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:05.108: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:11.553: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:15.395: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:16.314: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:21.955: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:25.729: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:41.115: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:46.389: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:47.226: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:52.271: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:25:57.167: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:08.133: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:10.611: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:14.881: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:25.978: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:27.142: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:39.663: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:39.668: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:47.493: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:26:51.891: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:03.984: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:07.271: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:10.092: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:25.407: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:26.356: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:35.573: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:45.886: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:51.412: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:54.936: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:27:55.036: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:19.353: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:26.425: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:28.445: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:30.688: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:34.837: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:41.385: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:42.762: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:49.253: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:54.443: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:55.019: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:28:59.770: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:29:12.534: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:29:18.116: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:29:20.518: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:29:47.389: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:29:47.704: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:29:52.196: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:29:52.868: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:29:53.676: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:01.878: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:02.849: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:20.503: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:27.660: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:32.679: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:34.286: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:40.662: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:41.343: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:45.149: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:30:57.260: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:00.220: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:04.147: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:15.408: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:28.480: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:29.791: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:30.432: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:42.147: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:45.834: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:45.956: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:57.139: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:31:58.789: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:07.518: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:10.943: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:18.725: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:28.043: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:29.774: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:35.768: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:40.850: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:47.093: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:32:54.798: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:04.888: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:13.140: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:13.273: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:18.551: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:24.375: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:34.300: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:38.198: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:45.583: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:33:47.744: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:00.999: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:06.504: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:07.326: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:12.694: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:24.159: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:25.970: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:33.056: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:39.555: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:46.207: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:50.771: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:34:56.172: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:03.544: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:14.633: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:15.164: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:20.750: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:38.386: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:38.956: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:47.952: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:52.066: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:35:58.610: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:04.607: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:11.024: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:15.544: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:27.743: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:28.545: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:34.070: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:34.298: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:40.960: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:46.363: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:36:53.090: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:00.504: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:11.430: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:17.684: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:23.517: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:23.534: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:30.309: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:34.442: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:41.289: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:47.535: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:37:53.375: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:04.625: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:05.676: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:16.139: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:18.312: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:24.905: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:37.629: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:39.420: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:42.586: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:50.922: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:38:59.885: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:39:03.131: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:39:12.393: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:39:13.871: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:39:18.245: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:39:33.381: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:39:37.638: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:39:39.486: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:39:43.005: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:01.481: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:09.099: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:10.476: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:18.758: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:24.664: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:26.683: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:47.299: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:49.080: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:51.286: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:55.706: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:56.334: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:40:59.728: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:02.314: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:08.863: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:15.381: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:20.802: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:27.562: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:33.373: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:40.172: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:46.148: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:41:52.246: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:04.257: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:04.638: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:10.700: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:16.572: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:35.964: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:42.950: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:48.644: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:51.165: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:54.283: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:42:55.235: g_object_get: assertion 'G_IS_OBJECT (object)' failed
+
+(firefox:44195): GLib-GObject-CRITICAL **: 18:43:00.265: g_object_get: assertion 'G_IS_OBJECT (object)' failed
