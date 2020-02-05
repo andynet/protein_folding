@@ -9,6 +9,9 @@ In this file I am going to explore the shared names between proteinnets12
 datasets and prospr. 
 """
 #%%
+import os
+os.chdir('/home/tomasla/deeply_thinking_potato/scripts')
+
 import numpy as np
 import pandas as pd
 import ast

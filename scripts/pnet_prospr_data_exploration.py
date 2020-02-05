@@ -7,6 +7,9 @@ Created on Thu Jan 30 10:14:32 2020
 """
 
 #%%
+import os
+os.chdir('/home/tomasla/deeply_thinking_potato/scripts')
+
 import pickle
 import numpy as np
 

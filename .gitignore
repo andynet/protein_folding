@@ -3,3 +3,5 @@ Data/
 data/
 !data/README.MD
 steps/
+scripts/__pycache__/
+scripts/core.51285
