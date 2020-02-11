@@ -31,6 +31,11 @@ attempt for alphafold replication. Can be an inspiration for our work and someth
 Community built distance predictions inspired by Alphafold. Paper: https://www.biorxiv.org/content/10.1101/830273v1
 
 ## Additional
+- **Morcos et al** https://www.pnas.org/content/pnas/108/49/E1293.full.pdf
+About DCA
+
+- **Kihara** https://link.springer.com/book/10.1007/978-1-4939-0366-5
+A book: Protein Structure Prediction
 
 - https://www.youtube.com/watch?v=quTdStK-k20
 How evolutionary features can inform us on the structure of proteins
