@@ -1,0 +1,12 @@
+Training on domain 4j0cA00 - 1. epoch.
+Done.
+epoch: 1        train_loss: 350577.72   validation_loss: 350577.72
+Training on domain 4j0cA00 - 2. epoch.
+Done.
+epoch: 2        train_loss: 344660.41   validation_loss: 344660.41
+Training on domain 4j0cA00 - 3. epoch.
+Done.
+epoch: 3        train_loss: 342853.62   validation_loss: 342853.62
+Training on domain 4j0cA00 - 4. epoch.
+Done.
+epoch: 4        train_loss: 348494.34   validation_loss: 348494.34

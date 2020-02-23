@@ -41,7 +41,7 @@ def get_elements(browser):
 
 # %%
 options = Options()
-options.headless = True
+options.headless = False
 
 profile = FirefoxProfile()
 profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/octet-stream')
@@ -56,7 +56,7 @@ browser = Firefox(firefox_profile=profile, options=options)
 url = 'https://byu.app.box.com/v/ProteinStructurePrediction/file/525402645504'
 filename = None
 n_errors = 0
-file = open('downloaded.log', 'w')
+# file = open('downloaded.log', 'w')
 
 browser.get(url)
 while True:
@@ -65,8 +65,11 @@ while True:
         url, filename, download_button, next_button = get_elements(browser)
         if not os.path.exists(f'/home/andyb/Downloads/{filename}'):
             download_button.click()
+            while not os.path.exists(f'/home/andyb/Downloads/{filename}.part'):
+                time.sleep(5)
             state = 'downloading'
-        print(f'{url}\t{filename}\t{state}', file=file, flush=True)
+        # print(f'{url}\t{filename}\t{state}', file=file, flush=True)
+        print(f'{url}\t{filename}\t{state}')
         next_button.click()
         time.sleep(5)
         n_errors = 0
