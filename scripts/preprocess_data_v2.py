@@ -118,13 +118,17 @@ domains = set(domains)\
     .intersection(name2seq.keys())\
     .intersection(name2bins.keys())
 
-domains = sorted(list(domains))[0:100]
+domains = sorted(list(domains))[0:10]
 
 # %%
 for domain in domains:
     data = get_tensors(domain, potts_template_pkl,
                        name2seq, name2pssm, name2hh, name2bins)
-    output_file = \
-        f'/faststorage/project/deeply_thinking_potato/data/prospr/tensors/{domain}.pt'
-    torch.save(data, output_file)
-    print(output_file)
+
+    if data[0].shape[1] == data[0].shape[2] == data[1].shape[0] == data[1].shape[1]:
+        output_file = \
+            f'/faststorage/project/deeply_thinking_potato/data/prospr/tensors2/{domain}.pt'
+        torch.save(data, output_file)
+        print(output_file)
+    else:
+        print(f'Domain {domain} is damaged.')
