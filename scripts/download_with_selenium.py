@@ -54,6 +54,9 @@ browser = Firefox(firefox_profile=profile, options=options)
 # url = 'https://byu.app.box.com/v/ProteinStructurePrediction/file/525406139424'
 # url = 'https://byu.app.box.com/v/ProteinStructurePrediction/file/525418936666'
 url = 'https://byu.app.box.com/v/ProteinStructurePrediction/file/525402645504'
+
+# https://files.physics.byu.edu/data/prospr/potts/
+
 filename = None
 n_errors = 0
 # file = open('downloaded.log', 'w')
