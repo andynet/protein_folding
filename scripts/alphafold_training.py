@@ -43,8 +43,13 @@ def crop_data(X_raw, Y_raw, i_offset, j_offset, crop_size):
         where N is the number of all possible inner crops induced by offset
     """
     seq_length = X_raw.shape[1]
-    i_offsets = list(range(i_offset, seq_length, crop_size))[0:-1]
-    j_offsets = list(range(j_offset, seq_length, crop_size))[0:-1]
+    i_offsets = list(range(i_offset, seq_length, crop_size))
+    j_offsets = list(range(j_offset, seq_length, crop_size))
+
+    if i_offsets[-1] + crop_size > seq_length:
+        i_offsets = i_offsets[0:-1]
+    if j_offsets[-1] + crop_size > seq_length:
+        j_offsets = j_offsets[0:-1]
 
     N = len(i_offsets) * len(j_offsets)
     X_cropped = torch.zeros((N, X_raw.shape[0], crop_size, crop_size),
@@ -79,65 +84,77 @@ def evaluate(model, domains, criterion, path, crop_size):
 def train(model, domains, criterion, path, crop_size):
     for domain in domains:
         X, Y = torch.load(path.format(domain))
-        print(domain, evaluate(model, [domain], criterion, path, crop_size), X.shape)
-        i_offset = random.randint(0, crop_size - 1)
-        j_offset = random.randint(0, crop_size - 1)
+        seq_length = X.shape[2]
+        i_offset = random.randint(0, min(crop_size, seq_length - crop_size))
+        j_offset = random.randint(0, min(crop_size, seq_length - crop_size))
         X, Y = crop_data(X, Y, i_offset, j_offset, crop_size)
-        model.fit(X, Y, batch_size=8, criterion=criterion, optimizer=optimizer)
-        print(domain, evaluate(model, [domain], criterion, path, crop_size))
+        model.fit(X, Y, batch_size=8,
+                  criterion=criterion, optimizer=optimizer)
 
 
 # %%
-model = AlphaFold(input_size=675, up_size=128, down_size=64, output_size=64,
-                  RESNET_depth=4).to(dtype=torch.float64)
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-criterion = torch.nn.CrossEntropyLoss()
-
-# %% check number of parameters
-# num_params = 0
-# for name, param in model.named_parameters():
-#     print(f'{np.prod(list(param.shape))}\t{param.shape}\t{name}')
-#     num_params += np.prod(list(param.shape))
-# print(f'{num_params}\ttotal')
+seed = 0
+random.seed(seed)
+torch.manual_seed(seed)
+np.random.seed(seed=seed)
 
 # %%
 files = glob.glob('/faststorage/project/deeply_thinking_potato/'
-                  'data/prospr/tensors2/*.pt')
+                  'data/prospr/tensors3/*.pt')
 domains = [file.split('/')[-1].split('.')[0] for file in files]
 del files
 
 # %%
-train_domains = domains[0:8]        # shuffle this in real run
-validation_domains = domains[8:]    # shuffle this in real run
+model = AlphaFold(input_size=675, up_size=128, down_size=64, output_size=64,
+                  RESNET_depth=64).to(dtype=torch.float64)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+criterion = torch.nn.CrossEntropyLoss()
+
+# %% check number of parameters
+num_params = 0
+for name, param in model.named_parameters():
+    num_params += np.prod(list(param.shape))
+print(f'Total number of parameters: {num_params}')
 
 # %%
-message = 'epoch: {}\ttrain_loss: {}\tvalidation_loss: {}\ttime: {}'
-path = '/faststorage/project/deeply_thinking_potato/data/prospr/tensors2/{}.pt'
-num_epochs = 5
-crop_size = 32
+crop_size = 64
+path = '/faststorage/project/deeply_thinking_potato/data/prospr/tensors3/{}.pt'
+filtered_domains = []
+
+for domain in domains[0:5]:
+    X, Y = torch.load(path.format(domain))
+    if X.shape[2] > crop_size:
+        filtered_domains.append(domain)
+
+# %%
+train_domains = filtered_domains[0:3]        # shuffle this in real run
+validation_domains = filtered_domains[3:4]    # shuffle this in real run
+
+# %%
+message = '{!s:20}\t{!s:20}\t{!s:20}\t{!s:20}\t{!s:20}'
+print(message.format('epoch', 'num_updates',
+                     'train_loss', 'validation_loss', 'timestamp'))
+num_epochs = 10
 
 # %%
 for epoch in range(0, num_epochs):
     with torch.no_grad():
         train_loss = evaluate(model, train_domains, criterion, path, crop_size)
         validation_loss = evaluate(model, validation_domains, criterion, path, crop_size)
-        print(message.format(epoch, train_loss, validation_loss, datetime.now()))
+        print(message.format(epoch, model.num_updates,
+                             train_loss, validation_loss, datetime.now()))
 
     train(model, train_domains, criterion, path, crop_size)
 
 with torch.no_grad():
     train_loss = evaluate(model, train_domains, criterion, path, crop_size)
     validation_loss = evaluate(model, validation_domains, criterion, path, crop_size)
-    print(message.format(num_epochs, train_loss, validation_loss, datetime.now()))
+    print(message.format(num_epochs, model.num_updates,
+                         train_loss, validation_loss, datetime.now()))
 
 # %%
-path = '/faststorage/project/deeply_thinking_potato/data/prospr/model.pt'
+path = '/faststorage/project/deeply_thinking_potato/data/prospr/overfitted_model.pt'
 # torch.save(model.state_dict(), path)
-
-# %%
-# model = AlphaFold(input_size=675, up_size=128, down_size=64, output_size=64,
-#                   RESNET_depth=4)
-# model.load_state_dict(torch.load(path))
 
 # %%
 # total loss = 10*distance_loss + sec_struct_loss1 + sec_struct_loss2
@@ -145,3 +162,15 @@ path = '/faststorage/project/deeply_thinking_potato/data/prospr/model.pt'
 
 # 500 000 iterations
 # batch size = 8
+
+# criterion(input_, target)
+# Out[39]: tensor(4.1589)
+
+# %%
+# L = 70
+# X = torch.randn([675, L, L]).to(dtype=torch.float64)
+# Y = torch.randint(64, (L, L))
+# data = (X, Y)
+# output_file = '/faststorage/project/deeply_thinking_potato/data/prospr/'\
+#     'tensors4/random.pt'
+# torch.save(data, output_file)
