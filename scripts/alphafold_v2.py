@@ -81,7 +81,12 @@ class AlphaFold(torch.nn.Module):
     def fit(self, X, Y, batch_size, criterion, optimizer):
         self.train()
         indices = np.random.permutation(range(X.shape[0]))
-        for i in range(0, X.shape[0], batch_size):
+
+        batch_starts = range(0, X.shape[0], batch_size)
+        if batch_starts[-1] + batch_size > X.shape[0]:
+            batch_starts = batch_starts[0:-1]
+
+        for i in batch_starts:
             X_batch = X[indices[i:i + batch_size], :, :, :]
             Y_batch = Y[indices[i:i + batch_size], :, :]
 

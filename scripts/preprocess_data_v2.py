@@ -118,16 +118,29 @@ domains = set(domains)\
     .intersection(name2seq.keys())\
     .intersection(name2bins.keys())
 
-domains = sorted(list(domains))[0:10]
+domains = sorted(list(domains))
 
 # %%
-for domain in domains:
+crop_size = 64
+
+# %%
+for domain in domains[0:200]:
+
+    if '-' in name2seq[domain]:
+        continue
+
+    if len(name2seq[domain]) < crop_size:
+        continue
+
+    if name2bins[domain].shape[0] != len(name2seq[domain]):
+        continue
+
     data = get_tensors(domain, potts_template_pkl,
                        name2seq, name2pssm, name2hh, name2bins)
 
     if data[0].shape[1] == data[0].shape[2] == data[1].shape[0] == data[1].shape[1]:
         output_file = \
-            f'/faststorage/project/deeply_thinking_potato/data/prospr/tensors2/{domain}.pt'
+            f'/faststorage/project/deeply_thinking_potato/data/prospr/tensors_cs64/{domain}.pt'
         torch.save(data, output_file)
         print(output_file)
     else:
