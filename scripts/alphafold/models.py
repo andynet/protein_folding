@@ -10,7 +10,6 @@ Prediction Network - https://doi.org/10.1101/830273
 
 # %%
 import torch
-import numpy as np
 
 
 # %%
@@ -78,30 +77,31 @@ class AlphaFold(torch.nn.Module):
         x = self.conv2(x)
         return x
 
-    def fit(self, X, Y, batch_size, criterion, optimizer):
+    def fit(self, X, Y, criterion, optimizer):
+        """
+        X.shape = (B, C, H, W)
+        Y.shape = (B, H, W)
+        """
         self.train()
-        indices = np.random.permutation(range(X.shape[0]))
-
-        batch_starts = range(0, X.shape[0], batch_size)
-        if batch_starts[-1] + batch_size > X.shape[0]:
-            batch_starts = batch_starts[0:-1]
-
-        for i in batch_starts:
-            X_batch = X[indices[i:i + batch_size], :, :, :]
-            Y_batch = Y[indices[i:i + batch_size], :, :]
-
-            optimizer.zero_grad()
-            prediction = self.forward(X_batch)
-            loss = criterion(prediction, Y_batch)
-            loss.backward()
-            optimizer.step()
-            self.num_updates += 1
+        optimizer.zero_grad()
+        prediction = self.forward(X)
+        loss = criterion(prediction, Y)
+        loss.backward()
+        optimizer.step()
+        self.num_updates += 1
 
     def predict(self, X):
+        """
+        X.shape = (B, C, H, W)
+        """
         self.eval()
         return self.forward(X)
 
     def score(self, X, Y, criterion):
+        """
+        X.shape = (B, C, H, W)
+        Y.shape = (B, H, W)
+        """
         self.eval()
         prediction = self.forward(X)
         loss = criterion(prediction, Y)
