@@ -41,8 +41,8 @@ pssmxample = pssm[0]['7fd1A00']
 
 del pssm
 #%% Distance bins
-#bins = open_pickle('../data/ProSPr/name2bins.pkl')
-binexample = bins[0]['2qrvD02']
+bins = open_pickle('../data/prospr/dicts/name2bins.pkl')
+binexample = bins[0]['2qsaA00']
 
 #del bins
 #%%
@@ -55,7 +55,7 @@ ss = open_pickle('../data/ProSPr/name2ss.pkl')
 ssexample = ss[0]['7fd1A00']
 
 #%%
-sequences = open_pickle('../data/ProSPr/name2seq.pkl')
+sequences = open_pickle('../data/prospr/dicts/name2seq.pkl')
 seqexample = sequences[0]['7fd1A00']
 #%%
 psi = open_pickle('../data/ProSPr/name2psi.pkl')

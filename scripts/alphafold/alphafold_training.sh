@@ -1,9 +1,10 @@
 #!/bin/bash
-#SBATCH --partition gpu
+#SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem=256g
-#SBATCH -c 1
+#SBATCH --cpus-per-task=1
+#SBATCH --time=840
 
-conda activate py_data
+# conda activate py_data
 ~/miniconda3/envs/py_data/bin/python alphafold_training.py > alphafold_training.log
 

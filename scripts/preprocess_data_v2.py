@@ -124,7 +124,7 @@ domains = sorted(list(domains))
 crop_size = 64
 
 # %%
-for domain in domains[0:200]:
+for domain in domains[200:]:
 
     if '-' in name2seq[domain]:
         continue

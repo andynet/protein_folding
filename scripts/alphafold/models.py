@@ -106,11 +106,3 @@ class AlphaFold(torch.nn.Module):
         prediction = self.forward(X)
         loss = criterion(prediction, Y)
         return loss
-
-# %%
-# input_ = torch.randn([1, 675, 64, 64]).to(dtype=torch.float64)
-
-# target = torch.randint(64, (1, 64, 64))
-
-# model.score(input_, target, criterion)
-# Out[60]: tensor(4.2335, dtype=torch.float64, grad_fn=<NllLoss2DBackward>)
