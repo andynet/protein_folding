@@ -1,0 +1,12 @@
+name: input_generation
+channels:
+    - conda-forge
+    - bioconda
+    - pytorch 
+dependencies:
+    - python
+    - openmpi
+    - hhsuite
+    - blast
+    - pytorch 
+    - numpy
