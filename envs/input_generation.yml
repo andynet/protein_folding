@@ -10,3 +10,5 @@ dependencies:
     - blast
     - pytorch 
     - numpy
+    - biopython
+
