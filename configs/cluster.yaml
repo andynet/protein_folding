@@ -1,0 +1,14 @@
+# --mem=32768 -c 1 -t 12:00:00 -A MutationRates
+
+__default__:
+    account: "MutationRates"
+    cpus-per-task: 1
+    time: "2:00:00"    # "days-hours:minutes"
+    mem: 32768
+    output: "logs/{rule}-%j.out"
+    error: "logs/{rule}-%j.err"
+
+# large_memory_requirement_job:
+#   constraint: mem2000MB
+#   ntasks: 16
+

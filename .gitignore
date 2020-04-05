@@ -6,3 +6,5 @@ steps/
 scripts/__pycache__/
 scripts/core.51285
 scripts/links.tsv
+logs/*
+
