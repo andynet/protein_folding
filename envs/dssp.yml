@@ -1,0 +1,10 @@
+name: dssp
+channels:
+    - salilab
+    - conda-forge
+dependencies:
+    - dssp
+    - python
+    - numpy
+    - torch
+    - biopython

@@ -3,12 +3,44 @@
 __default__:
     account: "MutationRates"
     cpus-per-task: 1
-    time: "2:00:00"    # "days-hours:minutes"
-    mem: 32768
+    time: "01:00:00"    # "days-hours:minutes"
+    mem: 16384
     output: "logs/{rule}-%j.out"
     error: "logs/{rule}-%j.err"
 
-# large_memory_requirement_job:
-#   constraint: mem2000MB
-#   ntasks: 16
+make_X:
+    time: "00:08:00"
+    mem: 16384
+
+frobenius:
+    time: "00:08:00"
+    mem: 512
+
+
+hhblits:
+    cpus-per-task: 16
+    time: "02:08:00"
+    mem: 8192
+
+
+plmc:
+    cpus-per-task: 16
+    time: "04:16:00"
+    mem: 4096
+
+
+psiblast:
+    cpus-per-task: 16
+    time: "04:16:00"
+    mem: 128
+
+
+pssm:
+    time: "00:04:00"
+    mem: 128
+
+
+reformat:
+    time: "00:08:00"
+    mem: 128
 
