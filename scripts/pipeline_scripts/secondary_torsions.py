@@ -12,22 +12,26 @@ import numpy as np
 
 
 # %%
-def secondary_torsions(domain, start, end):
+def secondary_torsions(domain):#, start, end):
     """Extract Secondary structure and torsion angles using the DSSP package"""
 
     domain_id = domain[:4]
     chain_id = domain[4]
 
     structure = PDBParser().get_structure('', f'../../data/pdbfiles/{domain_id}.pdb')
-    raw = DSSP(structure[0], f'../../data/pdbfiles/{domain_id}.pdb')
+    try:
+        raw = DSSP(structure[0], f'../../data/pdbfiles/{domain_id}.pdb')
+    except:
+        print('PDBException. Nothing we can do')
+        return None, None
     dssp = np.array(raw.property_list, dtype='O')
 
     # extract chain
-    keys = np.array([i[0] for i in raw.keys()])
-    positions = np.array([int(i[1][1]) for i in raw.keys()])
-    positions = positions[keys == chain_id]
+    #keys = np.array([i[0] for i in raw.keys()])
+    #positions = np.array([int(i[1][1]) for i in raw.keys()])
+    #positions = positions[keys == chain_id]
 
-    dssp = dssp[keys == chain_id]
+    #dssp = dssp[keys == chain_id]
 
     sequence = ''.join(dssp[:, 1])
 
@@ -40,6 +44,9 @@ def secondary_torsions(domain, start, end):
                 sec_torsions[i, j] = sec_torsions[i, j] - 360
             elif sec_torsions[i, j] < -180:
                 sec_torsions[i, j] = 360 - sec_torsions[i, j]
-
-    dssp_start, dssp_end = np.where(positions == start)[0][0], np.where(positions == end)[0][0]
-    return sec_torsions[dssp_start:(dssp_end + 1)], sequence[dssp_start:(dssp_end + 1)]
+    #try:
+    #    dssp_start, dssp_end = np.where(positions == start)[0][0], np.where(positions == end)[0][0]
+    #except IndexError:
+    #    print(domain, 'positions not found')
+    #    return None, None
+    return sec_torsions, sequence#sec_torsions[dssp_start:(dssp_end + 1)], sequence[dssp_start:(dssp_end + 1)]

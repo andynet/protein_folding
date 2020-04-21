@@ -7,9 +7,10 @@ directories "data/our_data/distance_maps/distance_maps[32,64]" and
 """
 
 # %% Imports
-from outputs_and_sequences import outputs_seq, domains
+from outputs_and_sequences import outputs_seq
 import torch
 import numpy as np
+import os
 
 
 # %% Function for generating .fasta file
@@ -18,6 +19,10 @@ def make_fasta(domain, sequence):
         s.write(f'>{domain}\n{sequence}')
 
 
+# %%
+domains0 = np.array([i.split('.')[0] for i in os.listdir('../../data/our_input/sequences')])
+generated = np.array([i.split('.')[0] for i in os.listdir('../../data/our_input/secondary')])
+not_generated = np.setdiff1d(domains0, generated)
 # %% Generate sequences and distance maps: DONE
 
 # for i in range(len(domains)):
@@ -33,15 +38,20 @@ def make_fasta(domain, sequence):
 #         torch.save(torch.from_numpy(d32), f'../../data/our_input/distance_maps/distance_maps32/{domain}.pt')
 #         print(f'Iteration {i}, domain {domain} files generated')
 
-# %% 19705, domain = 3zeuB02 PDBException: Structure/DSSP mismatch at <Residue MET het=  resseq=194 icode= >
-for i in range(13022, len(domains)):
-    domain = list(domains.keys())[i]
+# %% FOK IT. 19675 is enough
+dssp_smaller_than_pdb = 0
+for i in range(70, len(not_generated)):
+    domain = not_generated[i]
 
     d64, d32, seq, sectorsions = outputs_seq(domain, virtualcb=True)
-
-    if d64 is None:
+    
+    if isinstance(d64, int):
+        dssp_smaller_than_pdb += 1
+    elif d64 is None:
         pass
+        # break
     else:
+        # generated_number += 1
         torch.save(torch.from_numpy(d64), f'../../data/our_input/distance_maps/distance_maps64_cb/{domain}.pt')
         torch.save(torch.from_numpy(d32), f'../../data/our_input/distance_maps/distance_maps32_cb/{domain}.pt')
         with open(f'../../data/our_input/secondary/{domain}.sec', 'w') as f:

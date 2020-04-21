@@ -73,6 +73,34 @@ def virtual_cbeta(residue):
 
 
 # %%
+def align(pdbseq, dsspseq):
+    """Align resulting sequence from PDB with the one from DSSP. The provided
+    positions do no match in all cases"""
+
+    for i, c in enumerate(dsspseq):
+        if c == pdbseq[0]:
+            j = i + 1
+            k = 1
+            x = 0 # some residues are named X in dssp data while they have normal name in pdb
+            while k < len(pdbseq):
+                if k == len(pdbseq) - x:
+                    return i, i + len(pdbseq)
+                
+                if j == len(dsspseq):
+                    break
+                if dsspseq[j] == 'X':
+                    j += 1
+                    x += 1
+                    k += 1
+                elif dsspseq[j] == pdbseq[k]:
+                    j += 1
+                    k += 1
+                    pass
+                else:
+                    break
+
+    return None, None
+# %%
 def get_output(domain, virtualcb=False):
     """
     Function loads pdb file, reads it and returns the atomic coordinates of
@@ -181,15 +209,23 @@ def get_output(domain, virtualcb=False):
         coords_list = coords_list[start:(end + 1)]
 
         # Secondary structure and Torsion Angles
-        sec_torsions, seq = secondary_torsions(domain, start, end)
-
-        # Sanity check
-        if seq == ''.join(coords_list[:, 2]):
-            return coords_list, sec_torsions
-        else:
+        sec_torsions, seq = secondary_torsions(domain)  # , start, end)
+        if sec_torsions is None:
+            return None, None
+        
+        if len(seq) < len(coords_list):
+            print('DSSP output smaller than PDB')
+            return len(seq), len(coords_list)
+        
+        dssp_start, dssp_end = align(''.join(coords_list[:, 2]), seq)
+        
+        if dssp_start is None:
             print('DSSP Sequence != PDB sequence')
             print(f'PDB Sequence:\n{"".join(coords_list[:, 2])}\nDSSP sequence:\n{seq}')
             return None, None
+        else:
+            return coords_list, sec_torsions[dssp_start:dssp_end]
+
     else:
         print(f'Domain {domain} has missing data. PDB indices:{start, end}, CATH indices: {domain_start, domain_end}')
         return None, None
@@ -219,6 +255,9 @@ def outputs_seq(domain, virtualcb=False):
 
     if coords is None:
         return None, None, None, None
+
+    if isinstance(coords, int):
+        return coords, sectorsions, None, None
 
     L = coords.shape[0]
 

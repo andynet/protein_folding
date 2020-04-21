@@ -128,8 +128,8 @@ def dist_mat(target, casp_sequences, casp_targets):
             else:
                 dist_mat[i, j] = np.sqrt(np.sum((coords[i, 3:] - coords[j, 3:]) ** 2))
 
-    bins64 = np.concatenate(([0], np.linspace(2, 22, 62), [1000]))
-    bins32 = np.concatenate(([0], np.linspace(2, 22, 30), [1000]))
+    bins64 = np.concatenate(([0], np.linspace(2, 22, 62), [1000]))  # 1000 should be np.inf
+    bins32 = np.concatenate(([0], np.linspace(2, 22, 30), [1000]))  # are we lucky enough that it was correct?
 
     dist_mat64 = np.digitize(dist_mat, bins64)
     dist_mat32 = np.digitize(dist_mat, bins32)

@@ -20,12 +20,21 @@ with open('../../data/our_input/cath-domain-list-S35.txt') as f:
 
 # %% downloaded and generated domains and their lengths
 generated_domain_lengths = {}
-for i in os.listdir('../../data/our_input/sequences/'):
-    with open(f'../../data/our_input/sequences/{i}') as f:
-        f.readline()
+for i in os.listdir('../../data/our_input/secondary/'):
+    with open(f'../../data/our_input/secondary/{i}') as f:
         generated_domain_lengths[i.split('.')[0]] = len(f.readline())
 
 del f
+
+# open generated tensors
+generated_tensors = np.array([i.split('_')[0] for i in os.listdir('../../data/our_input/tensors')])
+
+# np.setdiff1d(list(generated_domain_lengths.keys()), generated_tensors)
+# array(['2qr6A01', '3r4yA01'], dtype='<U7')
+
+# remove above domanins
+del generated_domain_lengths['3r4yA01'], generated_domain_lengths['2qr6A01']
+
 # %% Extract Domain name, Class, Architecture, Topology, Homology superfamily
 # Column 1:  CATH domain name (seven characters)     0
 # Column 2:  Class number                            1

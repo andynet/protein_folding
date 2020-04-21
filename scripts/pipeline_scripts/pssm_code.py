@@ -1,24 +1,32 @@
-'''
-File contains Function for reading psiblast ascii pssm output and transforms
-it into matrix/tensor form
-'''
-
-import numpy as np
 
 
-def make_pssm(filepath):
-    pssm = []
-    with open(filepath) as f:
+# %%
+import torch
 
-        f.readline()
-        f.readline()
-        ln = f.readline()
-        # raw.append(ln.strip().split())  # aminoacid order
-        # ARNDCQEGHILKMFPSTWYV
-        while True:
-            ln = f.readline()
-            if ln == '\n':
-                break
-            pssm.append([int(i) for i in ln.strip().split()[2:22]])
+# %%
+# fp = "/faststorage/project/deeply_thinking_potato/data/our_input/temp/1r9dA01.pssm"
+# with open(fp) as f:
+#     lines = f.readlines()
 
-    return np.array(pssm)
+# %%
+# fp = "/faststorage/project/deeply_thinking_potato/data/our_input/temp/1r9dA01.pssm"
+# with open(fp) as f:
+#     f.readline()
+#     f.readline()
+#     f.readline()
+#     while True:
+#         line = f.readline()
+#         print(line)
+#         if line == '\n':
+#             break
+#         if line == '\EOF':
+#             pass
+
+# %%
+# f = open(fp)
+# for line in f:
+#    print(line)
+
+# %%
+# tmp = torch.load("/faststorage/project/deeply_thinking_potato/data/our_input/pssm/2lgqA00_pssm.pt")
+tmp = torch.load("/faststorage/project/deeply_thinking_potato/data/our_input/pssm/1r9dA01_pssm.pt")
