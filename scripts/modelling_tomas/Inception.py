@@ -15,6 +15,7 @@ INPUT_CHANNELS = 569
 CHANNELS = 128
 INCEPTIONS = 16
 OUTPUT_BINS = 32
+#GRADIENT_CLIP_MAX_NORM = 1
 
 
 class InceptionModule(nn.Module):
@@ -69,6 +70,7 @@ class Inception(nn.Module):
         preds = self.forward(X)
         loss = F.nll_loss(preds, Y)
 
+        #torch.nn.utils.clip_grad_norm_(self.parameters(), GRADIENT_CLIP_MAX_NORM)
         loss.backward()
         optimizer.step()
 
