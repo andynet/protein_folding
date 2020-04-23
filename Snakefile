@@ -6,9 +6,75 @@ include: "./scripts/input_functions.py"
 # snakemake --profile ./configs/slurm/ 
 # I recommend running in background using GNU screen application
 
+onsuccess:
+    shell("mail -s 'snakemake' andrejbalaz001@gmail.com <<< 'alphafold finished successfully'")
+
+onerror:
+    shell("mail -s 'snakemake' andrejbalaz001@gmail.com <<< 'alphafold finished with error'")
+
 rule main:
     input:
         get_input,
+
+# sketch - start
+# TODO
+# rule create_pdb:
+#     input:
+#         "{base_dir}/data/our_input/sequences/{domain}.fasta",
+#         "{base_dir}/data/our_input/secondary_struct/{domain}.ss",
+#         "{base_dir}/data/our_input/contact_pred/{domain}.rr",
+#     output:
+#         "{base_dir}/data/our_input/confold_out/{domain}/stage2/{domain}_model1.pdb",
+#     params:
+#         "{base_dir}/data/our_input/confold_out/{domain}",
+#         config["third_party_software"],
+#     shell:
+#         """
+#         {params[1]}/confold-1.0/confold.pl  \
+#             -rrtype ca                      \
+#             -stage2 1                       \
+#             -mcount 5                       \
+#             -seq {input[0]}                 \
+#             -ss {input[1]}                  \
+#             -rr {input[2]}                  \
+#             -o {params[0]}
+#         """
+# 
+# rule distogram_to_contact:...
+# 
+# rule predict:
+#     input:
+#         "model",
+#         "{base_dir}/data/our_input/tensors/{domain}_X.pt",
+#     output:
+#         "distogram",
+#         "angles",
+#         "secondary structure",
+#     shell:
+#         """
+#         python predict.py...
+#         """
+# sketch - end
+# 
+rule make_Y:
+    input:
+        "{base_dir}/data/our_input/distance_maps/distance_maps32/{domain}.pt",
+        "{base_dir}/data/our_input/secondary/{domain}.sec",
+        "{base_dir}/data/our_input/torsion/phi/{domain}_phi.pt",
+        "{base_dir}/data/our_input/torsion/psi/{domain}_psi.pt",
+    output:
+        "{base_dir}/data/our_input/Y_tensors/{domain}_Y.pt",
+    conda:
+        "envs/input_generation.yml",
+    shell:
+        """
+        python {wildcards.base_dir}/scripts/pipeline_scripts/make_Y.py  \
+            --dist_file {input[0]}                                      \
+            --ss_file {input[1]}                                        \
+            --phi_file {input[2]}                                       \
+            --psi_file {input[3]}                                       \
+            --output_file {output[0]}
+        """
 
 rule make_X:
     input:
@@ -141,7 +207,6 @@ rule psiblast:
     input:
         "{base_dir}/data/our_input/sequences/{domain}.fasta",
     output:
-        temp("{base_dir}/data/our_input/temp/{domain}.out"),
         temp("{base_dir}/data/our_input/temp/{domain}.pssm"),
     params:
         "{base_dir}/data/pipeline_tools/nrdb/nr",
@@ -156,12 +221,13 @@ rule psiblast:
         psiblast                                \
             -query {input[0]}                   \
             -db {params[0]}                     \
-            -out {output[0]}                    \
             -num_iterations {params[1]}         \
             -num_threads {threads}              \
             -evalue {params[2]}                 \
             -inclusion_ethresh {params[3]}      \
             -save_pssm_after_last_round         \
-            -out_ascii_pssm {output[1]} 
+            -out_ascii_pssm {output[0]}.part
+
+        mv {output[0]}.part {output[0]}
         """
 

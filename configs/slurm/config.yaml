@@ -1,6 +1,6 @@
 # --use-conda --drmaa ' --mem=65536 -c 1 -t 12:00:00 -A MutationRates' --keep-going --rerun-incomplete --jobs 3723
 # --use-conda --cluster 'sbatch --mem=64g -c 16 -t 720' --jobs 10000 --batch main=1/1000
-cores: 2048 # "all"
+cores: 256 # "all"
 # [--local-cores N] [--resources [NAME=INT [NAME=INT ...]]] [--default-resources [NAME=INT [NAME=INT ...]]] [--config [KEY=VALUE [KEY=VALUE ...]]]
 configfile: "configs/workflow.yaml" 
 # directory: "logs"
@@ -8,10 +8,14 @@ keep-going: true
 # [--force] [--forceall] [--forcerun [TARGET [TARGET ...]]] [--prioritize TARGET [TARGET ...]]
 # batch: "main=1/10" 
 rerun-incomplete: true
-# [--shadow-prefix DIR] [--report [HTMLFILE]] [--export-cwl FILE] [--list] [--list-target-rules] [--dag] [--rulegraph] [--filegraph] [--d3dag] [--summary] [--detailed-summary] [--archive FILE] [--cleanup-metadata FILE [FILE ...]] [--cleanup-shadow] [--skip-script-cleanup] [--unlock] [--list-version-changes] [--list-code-changes] [--list-input-changes] [--list-params-changes] [--list-untracked] [--delete-all-output] [--delete-temp-output] [--bash-completion] [--version] [--reason] [--gui [PORT]] [--printshellcmds] [--debug-dag] [--stats FILE] [--nocolor] [--quiet] [--print-compilation] [--verbose] [--force-use-threads] [--allow-ambiguity] [--nolock] [--ignore-incomplete] 
-latency-wait: 30
-# [--wait-for-files [FILE [FILE ...]]] [--notemp] [--keep-remote] [--keep-target-files] [--allowed-rules ALLOWED_RULES [ALLOWED_RULES ...]] 
-max-jobs-per-second: 256
+# [--shadow-prefix DIR] [--report [HTMLFILE]] [--export-cwl FILE] [--list] [--list-target-rules] [--dag] [--rulegraph] [--filegraph] [--d3dag] [--summary] [--detailed-summary] [--archive FILE] [--cleanup-metadata FILE [FILE ...]] [--cleanup-shadow] [--skip-script-cleanup] [--unlock] [--list-version-changes] [--list-code-changes] [--list-input-changes] [--list-params-changes] [--list-untracked] [--delete-all-output] 
+# delete-temp-output: true # deletes temporary files
+# [--bash-completion] [--version] [--reason] [--gui [PORT]] [--printshellcmds] [--debug-dag] [--stats FILE] [--nocolor] [--quiet] [--print-compilation] [--verbose] [--force-use-threads] [--allow-ambiguity] [--nolock] [--ignore-incomplete] 
+latency-wait: 60
+# [--wait-for-files [FILE [FILE ...]]] 
+notemp: true    # keep temporary files during the run 
+# [--keep-remote] [--keep-target-files] [--allowed-rules ALLOWED_RULES [ALLOWED_RULES ...]] 
+max-jobs-per-second: 32
 # [--max-status-checks-per-second MAX_STATUS_CHECKS_PER_SECOND] [--restart-times RESTART_TIMES] [--attempt ATTEMPT] [--wrapper-prefix WRAPPER_PREFIX] [--default-remote-provider {S3,GS,FTP,SFTP,S3Mocked,gfal,gridftp,iRODS}] [--default-remote-prefix DEFAULT_REMOTE_PREFIX] [--no-shared-fs] [--greediness GREEDINESS] [--no-hooks] [--overwrite-shellcmd OVERWRITE_SHELLCMD] [--debug] [--runtime-profile FILE] [--mode {0,1,2}]
 show-failed-logs: true
 # drmaa: "--mem=32768 -c 1 -t 12:00:00 -A MutationRates"

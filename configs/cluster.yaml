@@ -9,11 +9,11 @@ __default__:
     error: "logs/{rule}-%j.err"
 
 make_X:
-    time: "00:08:00"
-    mem: 16384
+    time: "00:32:00"
+    mem: 32768
 
 frobenius:
-    time: "00:08:00"
+    time: "00:32:00"
     mem: 512
 
 
@@ -25,22 +25,22 @@ hhblits:
 
 plmc:
     cpus-per-task: 16
-    time: "04:16:00"
+    time: "08:32:00"
     mem: 4096
 
 
 psiblast:
     cpus-per-task: 16
     time: "04:16:00"
-    mem: 128
+    mem: 4096
 
 
 pssm:
-    time: "00:04:00"
-    mem: 128
+    time: "01:04:00"
+    mem: 4096
 
 
 reformat:
-    time: "00:08:00"
-    mem: 128
+    time: "00:32:00"
+    mem: 512
 
