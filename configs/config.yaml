@@ -1,7 +1,0 @@
-data_dir: "/faststorage/project/deeply_thinking_potato/data"
-PLMC_MAX_ITER: 500
-HHBLITS_EVALUE: 0.001
-HHBLITS_ITER: 3
-PSIBLAST_ITER: 3
-PSIBLAST_EVALUE: 10
-PSIBLAST_ETHRESH: 0.001
