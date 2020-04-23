@@ -9,9 +9,11 @@ Created on Thu Feb 27 15:43:10 2020
 # %%
 from models import AlphaFold
 from datetime import datetime
+import pickle
 import numpy as np
 import argparse
 import random
+import psutil
 import torch
 import glob
 
@@ -25,10 +27,13 @@ def set_seed(seed=0):
 
 
 # %%
-def get_domains(path, n):
+def get_domains(path, n='all'):
     files = glob.glob(path.format('*'))
-    domains = [file.split('/')[-1].split('.')[0] for file in files][:n]
-    return domains
+    domains = [file.split('/')[-1].split('.')[0] for file in files]
+    if n == 'all':
+        return domains
+    else:
+        return domains[:n]
 
 
 # %%
@@ -48,84 +53,34 @@ def get_num_params(model):
 
 
 # %%
-def log(model, train_domains, validation_domains, criterion,
-        tensor_path, crop_size, message, device, epoch):
-
+def evaluate(model, loaded_domains, criterion, crop_size, device):
     with torch.no_grad():
-        train_loss = evaluate(model, train_domains, criterion, tensor_path, crop_size, device)
-        validation_loss = evaluate(model, validation_domains, criterion, tensor_path, crop_size, device)
+        losses = []
+        lengths = [Y.shape[0] for (_, Y) in loaded_domains]
+        max_length = max(lengths)
 
-        print(message.format(
-            epoch, model.num_updates, train_loss, validation_loss, datetime.now()),
-            flush=True)
-
-    return train_loss, validation_loss
-
-
-# %%
-def evaluate(model, domains, criterion, path, crop_size, device):
-    loss = 0
-    for domain in domains:
-        X, Y = torch.load(path.format(domain))
         i_offset = 0
         j_offset = 0
-        X, Y = crop_data(X, Y, i_offset, j_offset, crop_size)
-        # print(torch.cuda.memory_stats(device=torch.device('cuda'))['reserved_bytes.all.peak'])
-        loss += model.score(X.to(device=device), Y.to(device=device), criterion)
-    loss /= len(domains)
-    return round(loss.item(), 4)
 
+        for i in range(i_offset, max_length, crop_size):
+            for j in range(j_offset, max_length, crop_size):
 
-# %%
-def crop_data(X_raw, Y_raw, i_offset, j_offset, crop_size):
-    r"""
-    Generate inner crops induced by offset.
+                is_inner = [(max(i, j) + crop_size <= x) for x in lengths]
+                N = sum(is_inner)
 
-    Parameters
-    ----------
-    X_raw : torch.Tensor
-        Tensor with shape (C, L, L) and dtype torch.float64
-    Y_raw : torch.Tensor
-        Tensor with shape (L, L) and dtype torch.int64
-    i_offset : int
-        upper position of the first crop
-    j_offset : int
-        left position of the first crop
-    crop_size : int
-        width and height of the generated crops
+                if N == 0:
+                    continue
 
-    Returns
-    -------
-    X_cropped : torch.Tensor
-        Tensor with shape (N, C, crop_size, crop_size) and dtype torch.float64
-        where N is the number of all possible inner crops induced by offset
-    Y_cropped : torch.Tensor
-        Tensor with shape (N, crop_size, crop_size) and dtype torch.int64
-        where N is the number of all possible inner crops induced by offset
-    """
-    seq_length = X_raw.shape[1]
-    i_offsets = list(range(i_offset, seq_length, crop_size))
-    j_offsets = list(range(j_offset, seq_length, crop_size))
+                X, Y = construct_crop(loaded_domains, i, j, crop_size, is_inner, N)
 
-    if i_offsets[-1] + crop_size > seq_length:
-        i_offsets = i_offsets[0:-1]
-    if j_offsets[-1] + crop_size > seq_length:
-        j_offsets = j_offsets[0:-1]
+                loss = 0.0
+                loss = model.score(X.to(device=device),
+                                   Y.to(device=device),
+                                   criterion=criterion).item()
 
-    N = len(i_offsets) * len(j_offsets)
-    X_cropped = torch.zeros((N, X_raw.shape[0], crop_size, crop_size),
-                            dtype=torch.float32)
-    Y_cropped = torch.zeros((N, crop_size, crop_size),
-                            dtype=torch.int64)
+                losses.append(loss)
 
-    n = 0
-    for i in i_offsets:
-        for j in j_offsets:
-            X_cropped[n, :, :, :] = X_raw[:, i:i + crop_size, j:j + crop_size]
-            Y_cropped[n, :, :] = Y_raw[i:i + crop_size, j:j + crop_size]
-            n += 1
-
-    return X_cropped, Y_cropped
+    return round(sum(losses) / len(losses), 4)
 
 
 # %%
@@ -135,14 +90,12 @@ def save_model(epoch, train_loss, validation_loss, model, model_path):
 
 
 # %%
-def train(model, domains, criterion, optimizer,
-          path, crop_size, device, batch_size):
+def train(model, loaded_domains, criterion, optimizer,
+          crop_size, device, batch_size):
 
     # domains = train_domains; path = args.tensor_path; crop_size = args.crop_size;
     # device = args.device; batch_size = args.batch_size
 
-    # TODO: mode loading of domains out?
-    loaded_domains = [torch.load(path.format(x)) for x in domains]
     lengths = [Y.shape[0] for (_, Y) in loaded_domains]
     max_length = max(lengths)
 
@@ -188,17 +141,22 @@ def construct_crop(domains, i, j, crop_size, is_inner, N):
 
 # %%
 def main():
+    # %%
     args = argparse.Namespace()
     args.seed = 1
     args.use_cuda = True
     args.tensor_path = '/faststorage/project/deeply_thinking_potato/data/prospr/tensors_cs64/{}.pt'
     args.model_path = '/faststorage/project/deeply_thinking_potato/data/prospr/models/{}.pt'
 
+    args.train_path = '/faststorage/project/deeply_thinking_potato/data/prospr/dicts/TRAIN-p_names.pkl'
+    args.validation_path = '/faststorage/project/deeply_thinking_potato/data/prospr/dicts/VS-p_names.pkl'
+    # args.test_path = '/faststorage/project/deeply_thinking_potato/data/prospr/dicts/TEST-p_names.pkl'
+
     # memory and time parameters
-    args.RESNET_depth = 210              # 220 in prospr, needs to be 210 in our GPU
-    args.crop_size = 32                  # 64 in prospr
-    args.batch_size = 4                  # 8 in prospr
-    args.num_epochs = 640
+    args.RESNET_depth = 200              # 220 in prospr, needs to be 210 in our GPU
+    args.crop_size = 64                  # 64 in prospr
+    args.batch_size = 8                  # 8 in prospr
+    args.num_epochs = 1000
 
     # saving parameters
     args.train_limit = 4.1589            # 4.1589 is random model
@@ -212,37 +170,76 @@ def main():
     else:
         args.device = torch.device('cpu')
 
-    domains = get_domains(args.tensor_path, 40)
-    train_domains, validation_domains = data_split(domains, 0.9)
+    # %%
+    train_domains = pickle.load(open(args.train_path, "rb"))
+    validation_domains = pickle.load(open(args.validation_path, "rb"))
+
+    available_domains = get_domains(args.tensor_path)
+
+    # %%
+    train_domains = list(set(train_domains) & set(available_domains))
+    validation_domains = list(set(validation_domains) & set(available_domains))
 
     # %%
     model = AlphaFold(input_size=675, up_size=128, down_size=64, output_size=64,
                       RESNET_depth=args.RESNET_depth).to(device=args.device)
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
-    criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.CrossEntropyLoss(reduction='mean')
     print(f'Total number of parameters: {get_num_params(model)}')
 
-    # %%
     message = '{!s:16}{!s:16}{!s:16}{!s:16}{!s:16}'
     print(message.format(
         'epoch', 'num_updates', 'train_loss', 'validation_loss', 'timestamp'))
 
+    # %%
+    train_loaded = []
+    i = 0
+    while psutil.virtual_memory().percent < 60:
+        x = train_domains[i]
+        train_loaded.append(torch.load(args.tensor_path.format(x)))
+        i += 1
+
+    # %%
+    validation_loaded = []
+    j = 0
+    while psutil.virtual_memory().percent < 70:
+        x = validation_domains[j]
+        validation_loaded.append(torch.load(args.tensor_path.format(x)))
+        j += 1
+
+    # %%
     for epoch in range(0, args.num_epochs):
-        train_loss, validation_loss = log(model, train_domains, validation_domains,
-                                          criterion, args.tensor_path, args.crop_size,
-                                          message, args.device, epoch)
+
+        train_loss = evaluate(model, train_loaded[0:50], criterion,
+                              args.crop_size, args.device)
+
+        validation_loss = evaluate(model, validation_loaded[0:50], criterion,
+                                   args.crop_size, args.device)
+
+        print(message.format(epoch, model.num_updates, train_loss,
+                             validation_loss, datetime.now()), flush=True)
 
         if (train_loss < args.train_limit and validation_loss < args.validation_limit):
             save_model(epoch, train_loss, validation_loss, model, args.model_path)
             args.train_limit = train_loss
             args.validation_limit = validation_loss
 
-        train(model, train_domains, criterion, optimizer,
-              args.tensor_path, args.crop_size, args.device, args.batch_size)
+        train(model, train_loaded, criterion, optimizer,
+              args.crop_size, args.device, args.batch_size)
 
-    log(model, train_domains, validation_domains,
-        criterion, args.tensor_path, args.crop_size, message,
-        args.device, args.num_epochs)
+    train_loss = evaluate(model, train_loaded[0:50], criterion,
+                          args.crop_size, args.device)
+
+    validation_loss = evaluate(model, validation_loaded[0:50], criterion,
+                               args.crop_size, args.device)
+
+    print(message.format(epoch, model.num_updates, train_loss,
+                         validation_loss, datetime.now()), flush=True)
+
+    if (train_loss < args.train_limit and validation_loss < args.validation_limit):
+        save_model(epoch, train_loss, validation_loss, model, args.model_path)
+        args.train_limit = train_loss
+        args.validation_limit = validation_loss
 
 
 # %%
