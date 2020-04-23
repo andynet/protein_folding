@@ -1,0 +1,28 @@
+# this is a config file for neural network with auxiliary outputs
+
+input_size: 569
+up_size: 128
+down_size: 64
+output_size: 32
+aux_size: 82
+crop_size: 64
+RESNET_depth: 200
+X_files: "/faststorage/project/deeply_thinking_potato/data/our_input/tensors/{domain}_X.pt"
+Y_files: "/faststorage/project/deeply_thinking_potato/data/our_input/Y_tensors/{domain}_Y.pt"
+num_workers: 16
+max_epochs: 200
+max_domains: 2000   # 6000 corresponds to approx. 350GB of ram usage
+# max_domains: 500
+available_domains: "/faststorage/project/deeply_thinking_potato/data/our_input/train_domains.csv"
+use_cuda: True
+batch_size: 8
+model_path: "/faststorage/project/deeply_thinking_potato/data/our_input/model_230420/{epoch}.pt"
+log_file: ""
+tlim: 50
+vlim: 50
+
+
+lr: "1e-3"
+l2: "1e-4"
+train_proportion: 0.8
+seed: 0
