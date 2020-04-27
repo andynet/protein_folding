@@ -41,21 +41,25 @@ rule main:
 #         """
 # 
 # rule distogram_to_contact:...
-# 
-# rule predict:
-#     input:
-#         "model",
-#         "{base_dir}/data/our_input/tensors/{domain}_X.pt",
-#     output:
-#         "distogram",
-#         "angles",
-#         "secondary structure",
-#     shell:
-#         """
-#         python predict.py...
-#         """
-# sketch - end
-# 
+ 
+rule predict:
+    input:
+        "{base_dir}/data/our_input/model_270420/alphafold_aux.yml",
+        "{base_dir}/data/our_input/model_270420/12.pt",
+        "{base_dir}/data/our_input/tensors/{domain}_X.pt",
+    output:
+        "{base_dir}/data/our_input/tensors_Y_pred/{domain}_Y.pt",
+    conda:
+        "envs/py_data.yml",
+    shell:
+        """
+        python {wildcards.base_dir}/scripts/alphafold/alphafold_aux_prediction.py   \
+            --config_file {input[0]}                                                \
+            --model_file {input[1]}                                                 \
+            --input_file {input[2]}                                                 \
+            --output_file {output[0]}
+        """
+
 rule make_Y:
     input:
         "{base_dir}/data/our_input/distance_maps/distance_maps32/{domain}.pt",

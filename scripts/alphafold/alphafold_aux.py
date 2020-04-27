@@ -72,6 +72,9 @@ def train(model, loaded_domains, criterion, optimizer,
             is_inner = [(max(i, j) + crop_size <= x) for x in lengths]
             N = sum(is_inner)
 
+            if N < batch_size:
+                continue
+
             X, Y = construct_crop(loaded_domains, i, j, crop_size, is_inner, N)
 
             indices = np.random.permutation(range(N))
@@ -146,15 +149,20 @@ torch.cuda.manual_seed_all(cfg['seed'])
 train_domains = pd.read_csv(cfg['available_domains'], header=None).loc[:, 0]
 X_domains = get_domains(cfg['X_files'].format(domain='*'))
 Y_domains = get_domains(cfg['Y_files'].format(domain='*'))
-domains = list(set(X_domains) & set(Y_domains) & set(train_domains))
-domains = sorted(domains)[0:cfg['max_domains']]
+domains = sorted(list(set(X_domains) & set(Y_domains) & set(train_domains)))
+random.shuffle(domains)
 del train_domains, X_domains, Y_domains
 
 # %%
+# cfg['chunk_size'] = 256
+# domains = domains[0:cfg['max_domains']]
+# chunks = [domains[x:x + cfg['chunk_size']] for x in range(0, len(domains), cfg['chunk_size'])]
+
+# %%
+domains = domains[0:cfg['max_domains']]
 dataset = Domains(domains, cfg['X_files'], cfg['Y_files'], verbosity=0)
 loader = torch.utils.data.DataLoader(dataset, num_workers=cfg['num_workers'])
 
-# %%
 loaded_data = []
 loaded_domains = []
 for i, (X, Y, domain) in enumerate(loader):
@@ -174,18 +182,30 @@ else:
     device = torch.device('cpu')
 
 # %%
+# model = AlphaFold(
+#     input_size=cfg['input_size'], up_size=cfg['up_size'],
+#     down_size=cfg['down_size'], output_size=cfg['output_size'],
+#     aux_size=cfg['aux_size'], crop_size=cfg['crop_size'],
+#     RESNET_depth=cfg['RESNET_depth']
+# ).to(device=device)
+
 model = AlphaFold(
-    input_size=cfg['input_size'],
-    up_size=cfg['up_size'],
-    down_size=cfg['down_size'],
-    output_size=cfg['output_size'],
-    aux_size=cfg['aux_size'],
+    in_channels=cfg['in_channels'],
+    dist_channels=cfg['dist_channels'],
+    ss_channels=cfg['ss_channels'],
+    phi_channels=cfg['phi_channels'],
+    psi_channels=cfg['psi_channels'],
+    up_channels=cfg['up_channels'],
+    down_channels=cfg['down_channels'],
+    RESNET_depth=cfg['RESNET_depth'],
     crop_size=cfg['crop_size'],
-    RESNET_depth=cfg['RESNET_depth']
+    weights=cfg['weights']
 ).to(device=device)
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=float(cfg['lr']),
                              weight_decay=float(cfg['l2']))
+
+# average mistake should be 53.2606
 
 # %%
 message = '{!s:16}{!s:16}{!s:16}{!s:16}{!s:16}'
@@ -200,6 +220,9 @@ for epoch in range(0, cfg['max_epochs']):
 
     validation_loss = evaluate(model, validation_loaded[0:50], criterion,
                                cfg['crop_size'], device)
+
+    # TODO: if the validation error was worse than last 3 validation errors
+    # reload data
 
     print(message.format(epoch, model.num_updates, train_loss,
                          validation_loss, datetime.now()), flush=True)
