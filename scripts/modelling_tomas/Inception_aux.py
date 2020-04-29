@@ -56,15 +56,24 @@ class Inception(nn.Module):
             [nn.BatchNorm2d(CHANNELS) for i in range(INCEPTIONS)]
         )
 
-        self.convOut = nn.Conv2d(CHANNELS, OUTPUT_BINS, 1)
-
+        self.conv_dist = nn.Conv2d(CHANNELS, OUTPUT_BINS, 1)
+        
+        self.conv_aux0 = nn.Conv2d(CHANNELS, 83, 1)
+        self.conv_aux1 = nn.Conv2d(83, 83, 64)
+        
+        
     def forward(self, x):
         x = self.bnInp(x)
         x = torch.relu(self.bn1(self.convInp(x)))
         for i in range(INCEPTIONS):
             x = torch.relu(self.bn_list[i](self.inception_list[i](x)))
-            
-        return F.log_softmax(self.convOut(x), dim=0)
+        
+        dist_out = F.log_softmax(self.conv_dist(x), dim=0)
+        
+        aux = self.conv_aux0(x)
+        aux_out = F.log_softmax(self.conv_aux1(aux), dim=0)
+        
+        return dist_out, aux_out
 
     def fit(self, X, Y, optimizer):
         self.train()

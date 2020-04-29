@@ -1,0 +1,17 @@
+name: py_data
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - pytorch
+  - torchvision
+  - cudatoolkit
+  - matplotlib
+  - seaborn
+  - pyyaml
+
