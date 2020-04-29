@@ -196,6 +196,32 @@ def pad_crop(crop, edges, output_crop=None, crop_size=64, random_state=1):
             padded_input[:, i_offset:(L + i_offset), j_offset:(L + j_offset)] = crop
             padded_output[:, i_offset:(L + i_offset), j_offset:(L + j_offset)] = output_crop
             
+            # Commented part only picks corners 
+            
+            # pick one of four conformations: topleft=0, topright=1, bottomleft=2, bottomright=3
+            #ofset = crop_size - L
+            #conformation = random_state % 4
+            
+            #if conformation == 0:
+            #    i0, j0 = 0, 0
+            #    imax, jmax = crop_size - ofset, crop_size - ofset
+            # 
+            #elif conformation == 1:
+            #    i0, j0 = 0, ofset
+            #    imax, jmax = crop_size - ofset, crop_size
+            # 
+            #elif conformation == 2:
+            #    i0, j0 = ofset, 0
+            #    imax, jmax = crop_size, crop_size - ofset
+            #
+            #elif conformation == 3:
+            #    i0, j0 = ofset, ofset
+            #    imax, jmax = crop_size, crop_size
+            #
+            #padded_input[:, i0:imax, j0:jmax] = crop
+            #padded_output[:, i0:imax, j0:jmax] = output_crop
+            
+            
             return padded_input, padded_output
 
         elif edges == 'topleft' or edges == 'top':
@@ -220,7 +246,7 @@ def make_batches(input_tensor, output_tensor, c=64, random_state=1):
     output_tensor = output_tensor.reshape((1, L, L))
     
     if L < c:
-        input_batches, output_batches = pad_crop(input_tensor, 'all', output_tensor)
+        input_batches, output_batches = pad_crop(input_tensor, 'all', output_tensor, random_state=random_state)
         return torch.from_numpy(input_batches).view((1, Ch, c, c)).to(torch.float32), torch.from_numpy(output_batches).to(torch.long)
     
     crop_indices = make_crop_indices(L, c=c, random_state=random_state)

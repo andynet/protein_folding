@@ -12,12 +12,13 @@ import torch.nn.functional as F
 
 
 INPUT_CHANNELS = 569
-CHANNELS = 32
+CHANNELS = 128
 OUTPUT_BINS = 32
 HIDDEN = 16
-KERNEL_SIZE = 3
-PADDING = 1
+KERNEL_SIZE = 5
+PADDING = 2
 DILATION = 1
+#GRADIENT_CLIP_MAX_NORM = 1
 
 class ConvNet(nn.Module):
 
@@ -63,10 +64,10 @@ class ConvNet(nn.Module):
 
         preds = self.forward(X)
         loss = F.nll_loss(preds, Y)
-
+        
+        #torch.nn.utils.clip_grad_norm_(self.parameters(), GRADIENT_CLIP_MAX_NORM)
         loss.backward()
         optimizer.step()
-        del preds
         
     def predict(self, X):
         self.eval()

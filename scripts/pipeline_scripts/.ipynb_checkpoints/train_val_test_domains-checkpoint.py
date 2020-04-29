@@ -7,8 +7,6 @@ Script generates lists of Training domains, Validation domains and Test domains
 # %% Imports
 import os
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # %% Constants
 TEST_SET_SIZE = 500
@@ -22,12 +20,21 @@ with open('../../data/our_input/cath-domain-list-S35.txt') as f:
 
 # %% downloaded and generated domains and their lengths
 generated_domain_lengths = {}
-for i in os.listdir('../../data/our_input/sequences/'):
-    with open(f'../../data/our_input/sequences/{i}') as f:
-        f.readline()
+for i in os.listdir('../../data/our_input/secondary/'):
+    with open(f'../../data/our_input/secondary/{i}') as f:
         generated_domain_lengths[i.split('.')[0]] = len(f.readline())
 
 del f
+
+# open generated tensors
+generated_tensors = np.array([i.split('_')[0] for i in os.listdir('../../data/our_input/tensors')])
+
+# np.setdiff1d(list(generated_domain_lengths.keys()), generated_tensors)
+# array(['2qr6A01', '3r4yA01'], dtype='<U7')
+
+# remove above domanins
+del generated_domain_lengths['3r4yA01'], generated_domain_lengths['2qr6A01']
+
 # %% Extract Domain name, Class, Architecture, Topology, Homology superfamily
 # Column 1:  CATH domain name (seven characters)     0
 # Column 2:  Class number                            1
@@ -55,7 +62,7 @@ for i in range(len(raw)):
         ind += 1
 
 cath_domains = np.array(cath_domains)
-del line, i, raw, f
+del line, i, raw
 
 
 # we cannot use the column 11 because the domain lengths from pdb file differ
@@ -63,8 +70,8 @@ del line, i, raw, f
 
 # Generate Train/Validation/Test set
 
-# 1. Filter Homologous Superfamilies with more than `HOMOLOGOUS_SUPERFAMILY_CUTOFF` members. 
-# If this condition is satisfied then randomly pick that number of domains from that 
+# 1. Filter Homologous Superfamilies with more than `HOMOLOGOUS_SUPERFAMILY_CUTOFF` members.
+# If this condition is satisfied then randomly pick that number of domains from that
 # particular superfamily
 
 homologous_superfamilies, counts = np.unique(cath_data[:, 4], return_counts=True)
@@ -78,7 +85,7 @@ for HS_ID in homologous_superfamilies[np.where(counts > HOMOLOGOUS_SUPERFAMILY_C
 
 cath_data_filtered = cath_data[np.setdiff1d(cath_data[:, 0], indices_to_delete)]
 
-# %% 2. Create Train, Val and Test set, while keeping in mind that all members of one 
+# %% 2. Create Train, Val and Test set, while keeping in mind that all members of one
 # superfamily have to be inside on of the sets
 homologous_superfamilies, counts = np.unique(cath_data_filtered[:, 4], return_counts=True)
 
@@ -92,10 +99,10 @@ families = []
 test_families = []
 
 while length != TEST_SET_SIZE:
-    
+
     ind = np.random.randint(len(counts))
     family, familysize = homologous_superfamilies[ind], counts[ind]
-    
+
     if familysize < MAX_FAMILY_SIZE:
         if length + familysize <= TEST_SET_SIZE and family not in families:
             length += familysize
@@ -109,27 +116,27 @@ length = 0
 validation_families = []
 
 while length != VALIDATION_SET_SIZE:
-    
+
     ind = np.random.randint(len(counts))
     family, familysize = homologous_superfamilies[ind], counts[ind]
-    
+
     if familysize < MAX_FAMILY_SIZE:
         if length + familysize <= VALIDATION_SET_SIZE and family not in families:
             length += familysize
             families.append(family)
             validation_families.append(family)
-            
+
 # %% 2.2 Create datasets
 # TEST
 test_data = cath_data_filtered[cath_data_filtered[:, 4] == test_families[0]]
 for i in range(1, len(test_families)):
     test_data = np.concatenate((test_data, cath_data_filtered[cath_data_filtered[:, 4] == test_families[i]]))
-    
+
 # VALIDATION
 validation_data = cath_data_filtered[cath_data_filtered[:, 4] == validation_families[0]]
 for i in range(1, len(validation_families)):
     validation_data = np.concatenate((validation_data, cath_data_filtered[cath_data_filtered[:, 4] == validation_families[i]]))
-    
+
 # TRAIN
 train_indices = np.setdiff1d(cath_data_filtered[:, 0], np.concatenate((test_data[:, 0], validation_data[:, 0])))
 train_data = cath_data_filtered[[cath_data_filtered[i, 0] in train_indices for i in range(cath_data_filtered.shape[0])]]
@@ -141,7 +148,7 @@ test_domains = cath_domains[test_data[:, 0]]
 with open('../../data/our_input/test_domains.csv', 'w') as f:
     for i in test_domains:
         f.write(i + '\n')
-        
+
 # Validation Domains
 validation_domains = cath_domains[validation_data[:, 0]]
 with open('../../data/our_input/validation_domains.csv', 'w') as f:

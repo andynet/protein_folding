@@ -119,12 +119,12 @@ domains = set(domains)\
     .intersection(name2bins.keys())
 
 domains = sorted(list(domains))
-
 # %%
 crop_size = 64
 
 # %%
-for domain in domains[200:]:
+# last successful /faststorage/project/deeply_thinking_potato/data/prospr/tensors_cs64/3o58A02.pt
+for domain in domains[domains.index('3o7qA01') + 1:]:
 
     if '-' in name2seq[domain]:
         continue
@@ -135,8 +135,15 @@ for domain in domains[200:]:
     if name2bins[domain].shape[0] != len(name2seq[domain]):
         continue
 
-    data = get_tensors(domain, potts_template_pkl,
-                       name2seq, name2pssm, name2hh, name2bins)
+    try:
+        data = get_tensors(domain, potts_template_pkl,
+                           name2seq, name2pssm, name2hh, name2bins)
+    except EOFError as err:
+        print(err)
+        continue
+    except ValueError as err:
+        print(err)
+        continue
 
     if data[0].shape[1] == data[0].shape[2] == data[1].shape[0] == data[1].shape[1]:
         output_file = \

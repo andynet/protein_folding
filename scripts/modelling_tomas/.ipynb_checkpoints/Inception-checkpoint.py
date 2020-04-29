@@ -15,6 +15,7 @@ INPUT_CHANNELS = 569
 CHANNELS = 128
 INCEPTIONS = 16
 OUTPUT_BINS = 32
+#GRADIENT_CLIP_MAX_NORM = 1
 
 
 class InceptionModule(nn.Module):
@@ -31,7 +32,7 @@ class InceptionModule(nn.Module):
         c2 = self.conv2(x)
         c3 = self.conv3(x)
         o = c1 + c2 + c3 + x
-        return torch.relu(self.bn(o))
+        return o
 
 
 class Inception(nn.Module):
@@ -51,14 +52,17 @@ class Inception(nn.Module):
         self.inception_list = nn.ModuleList(
             [inception(CHANNELS) for i in range(INCEPTIONS)]
         )
+        self.bn_list = nn.ModuleList(
+            [nn.BatchNorm2d(CHANNELS) for i in range(INCEPTIONS)]
+        )
 
         self.convOut = nn.Conv2d(CHANNELS, OUTPUT_BINS, 1)
 
     def forward(self, x):
         x = self.bnInp(x)
         x = torch.relu(self.bn1(self.convInp(x)))
-        for inc in self.inception_list:
-            x = inc(x)
+        for i in range(INCEPTIONS):
+            x = torch.relu(self.bn_list[i](self.inception_list[i](x)))
             
         return F.log_softmax(self.convOut(x), dim=0)
 
@@ -69,6 +73,7 @@ class Inception(nn.Module):
         preds = self.forward(X)
         loss = F.nll_loss(preds, Y)
 
+        #torch.nn.utils.clip_grad_norm_(self.parameters(), GRADIENT_CLIP_MAX_NORM)
         loss.backward()
         optimizer.step()
 
