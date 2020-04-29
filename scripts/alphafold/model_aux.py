@@ -94,16 +94,16 @@ class AlphaFold(torch.nn.Module):
             [RESNETBlock(up_size=up_channels, down_size=down_channels,
                          dilation_size=2**(i % 4)) for i in range(0, RESNET_depth)])
 
-        self.dist_aux = torch.nn.Conv2d(
+        self.dist = torch.nn.Conv2d(
             in_channels=up_channels, out_channels=dist_channels, kernel_size=1)
 
-        self.ss_aux = AuxBlock(
+        self.aux_ss = AuxBlock(
             C_in=up_channels, C_aux=ss_channels, crop_size=crop_size)
 
-        self.phi_aux = AuxBlock(
+        self.aux_phi = AuxBlock(
             C_in=up_channels, C_aux=phi_channels, crop_size=crop_size)
 
-        self.psi_aux = AuxBlock(
+        self.aux_psi = AuxBlock(
             C_in=up_channels, C_aux=psi_channels, crop_size=crop_size)
 
     def forward(self, x):
@@ -112,12 +112,23 @@ class AlphaFold(torch.nn.Module):
         for block in self.RESNETBlocks:
             x = block(x)
 
-        dist = self.dist_aux(x)
-        ss = self.ss_aux(x)
-        phi = self.phi_aux(x)
-        psi = self.psi_aux(x)
+        dist = self.dist(x)
 
-        return dist, ss, phi, psi
+        ss_i = self.aux_ss(x)
+        phi_i = self.aux_phi(x)
+        psi_i = self.aux_psi(x)
+
+        x = torch.transpose(x, 2, 3)
+
+        ss_j = self.aux_ss(x)
+        phi_j = self.aux_phi(x)
+        psi_j = self.aux_psi(x)
+
+        return (
+            dist,
+            ss_i, phi_i, psi_i,
+            ss_j, phi_j, psi_j
+        )
 
     def fit(self, X, Y, criterion, optimizer):
         optimizer.zero_grad()
@@ -137,6 +148,9 @@ class AlphaFold(torch.nn.Module):
             + self.weights['2nd'] * criterion(Y_pred[1], Y[1])
             + self.weights['phi'] * criterion(Y_pred[2], Y[2])
             + self.weights['psi'] * criterion(Y_pred[3], Y[3])
+            + self.weights['2nd'] * criterion(Y_pred[4], Y[4])
+            + self.weights['phi'] * criterion(Y_pred[5], Y[5])
+            + self.weights['psi'] * criterion(Y_pred[6], Y[6])
         )
         return loss
 

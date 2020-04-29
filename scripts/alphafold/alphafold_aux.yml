@@ -16,18 +16,18 @@ RESNET_depth: 200
 
 # other params
 crop_size: 64
-weights: {'dgram': 10, '2nd': 2, 'phi': 2, 'psi': 2}
+weights: {'dgram': 10, '2nd': 1, 'phi': 1, 'psi': 1}
 
 X_files: "/faststorage/project/deeply_thinking_potato/data/our_input/tensors/{domain}_X.pt"
 Y_files: "/faststorage/project/deeply_thinking_potato/data/our_input/Y_tensors/{domain}_Y.pt"
 num_workers: 16
 max_epochs: 200
-max_domains: 2000   # 6000 corresponds to approx. 350GB of ram usage
-# max_domains: 50
+# max_domains: 2000   # 6000 corresponds to approx. 350GB of ram usage
+max_domains: 50
 available_domains: "/faststorage/project/deeply_thinking_potato/data/our_input/train_domains.csv"
 use_cuda: True
 batch_size: 8
-model_path: "/faststorage/project/deeply_thinking_potato/data/our_input/model_270420/{epoch}.pt"
+model_path: "/faststorage/project/deeply_thinking_potato/data/our_input/model_290420/{epoch}.pt"
 log_file: ""
 
 lr: "1e-3"

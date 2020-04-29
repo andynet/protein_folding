@@ -29,15 +29,20 @@ def get_domains(path, n='all'):
 
 # %%
 def construct_crop(domains, i, j, crop_size, is_inner, N):
-    print(f'Constructing crop {i} {j} with {N} proteins.')
+    # print(f'Constructing crop {i} {j} with {N} proteins.')
 
     n_channels = domains[0][0].shape[1]
     X = torch.zeros((N, n_channels, crop_size, crop_size), dtype=torch.float32)
 
     dist = torch.zeros((N, crop_size, crop_size), dtype=torch.int64)
-    ss = torch.zeros((N, crop_size), dtype=torch.int64)
-    phi = torch.zeros((N, crop_size), dtype=torch.int64)
-    psi = torch.zeros((N, crop_size), dtype=torch.int64)
+
+    ss_i = torch.zeros((N, crop_size), dtype=torch.int64)
+    phi_i = torch.zeros((N, crop_size), dtype=torch.int64)
+    psi_i = torch.zeros((N, crop_size), dtype=torch.int64)
+
+    ss_j = torch.zeros((N, crop_size), dtype=torch.int64)
+    phi_j = torch.zeros((N, crop_size), dtype=torch.int64)
+    psi_j = torch.zeros((N, crop_size), dtype=torch.int64)
 
     n = 0
     for k, (X_raw, Y_raw) in enumerate(domains):
@@ -45,14 +50,20 @@ def construct_crop(domains, i, j, crop_size, is_inner, N):
 
             X[n, :, :, :] = X_raw[0, :, i:i + crop_size, j:j + crop_size]
             dist_raw, ss_raw, phi_raw, psi_raw = Y_raw
+
             dist[n, :, :] = dist_raw[0, i:i + crop_size, j:j + crop_size]
-            ss[n, :] = ss_raw[0, i:i + crop_size]
-            phi[n, :] = phi_raw[0, i:i + crop_size]
-            psi[n, :] = psi_raw[0, i:i + crop_size]
+
+            ss_i[n, :] = ss_raw[0, i:i + crop_size]
+            phi_i[n, :] = phi_raw[0, i:i + crop_size]
+            psi_i[n, :] = psi_raw[0, i:i + crop_size]
+
+            ss_j[n, :] = ss_raw[0, j:j + crop_size]
+            phi_j[n, :] = phi_raw[0, j:j + crop_size]
+            psi_j[n, :] = psi_raw[0, j:j + crop_size]
 
             n += 1
 
-    Y = (dist, ss, phi, psi)
+    Y = (dist, ss_i, phi_i, psi_i, ss_j, phi_j, psi_j)
     return X, Y
 
 
@@ -81,16 +92,13 @@ def train(model, loaded_domains, criterion, optimizer,
             batch_starts = [x * batch_size for x in range(0, N // batch_size)]
 
             for k in batch_starts:
-                X_batch = X[indices[k:k + batch_size], :, :, :]
+                X_batch = X[indices[k:k + batch_size], :, :, :].to(device)
 
-                Y_batch = (
-                    Y[0][indices[k:k + batch_size], :, :].to(device=device),
-                    Y[1][indices[k:k + batch_size], :].to(device=device),
-                    Y[2][indices[k:k + batch_size], :].to(device=device),
-                    Y[3][indices[k:k + batch_size], :].to(device=device)
-                )
+                Y_batch = tuple([
+                    Y[l][indices[k:k + batch_size]].to(device) for l in range(7)
+                ])
 
-                model.fit(X_batch.to(device=device),
+                model.fit(X_batch,
                           Y_batch,
                           criterion=criterion, optimizer=optimizer)
 
@@ -116,15 +124,11 @@ def evaluate(model, loaded_domains, criterion, crop_size, device):
 
                 X, Y = construct_crop(loaded_domains, i, j, crop_size, is_inner, N)
 
-                Y = (
-                    Y[0].to(device=device),
-                    Y[1].to(device=device),
-                    Y[2].to(device=device),
-                    Y[3].to(device=device)
-                )
+                X = X.to(device)
+                Y = tuple([Y[l].to(device) for l in range(7)])
 
                 loss = 0.0
-                loss = model.score(X.to(device=device),
+                loss = model.score(X,
                                    Y,
                                    criterion=criterion).item()
 
@@ -182,13 +186,6 @@ else:
     device = torch.device('cpu')
 
 # %%
-# model = AlphaFold(
-#     input_size=cfg['input_size'], up_size=cfg['up_size'],
-#     down_size=cfg['down_size'], output_size=cfg['output_size'],
-#     aux_size=cfg['aux_size'], crop_size=cfg['crop_size'],
-#     RESNET_depth=cfg['RESNET_depth']
-# ).to(device=device)
-
 model = AlphaFold(
     in_channels=cfg['in_channels'],
     dist_channels=cfg['dist_channels'],
