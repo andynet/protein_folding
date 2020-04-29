@@ -8,4 +8,7 @@ scripts/core.51285
 scripts/links.tsv
 logs/*
 *.pyc
-
+**.sh-[0-9]*[0-9].out
+**.log
+**.ipynb_checkpoints**
+**.snakemake
