@@ -5,3 +5,5 @@ HHBLITS_ITER: 3
 PSIBLAST_ITER: 3
 PSIBLAST_EVALUE: 10
 PSIBLAST_ETHRESH: 0.001
+third_party_software: "/faststorage/project/deeply_thinking_potato/scripts/structure_realization_v2"
+

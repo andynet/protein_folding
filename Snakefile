@@ -12,35 +12,51 @@ onsuccess:
 onerror:
     shell("mail -s 'snakemake' andrejbalaz001@gmail.com <<< 'alphafold finished with error'")
 
+localrules: create_pdb
+
 rule main:
     input:
         get_input,
 
-# sketch - start
-# TODO
-# rule create_pdb:
-#     input:
-#         "{base_dir}/data/our_input/sequences/{domain}.fasta",
-#         "{base_dir}/data/our_input/secondary_struct/{domain}.ss",
-#         "{base_dir}/data/our_input/contact_pred/{domain}.rr",
-#     output:
-#         "{base_dir}/data/our_input/confold_out/{domain}/stage2/{domain}_model1.pdb",
-#     params:
-#         "{base_dir}/data/our_input/confold_out/{domain}",
-#         config["third_party_software"],
-#     shell:
-#         """
-#         {params[1]}/confold-1.0/confold.pl  \
-#             -rrtype ca                      \
-#             -stage2 1                       \
-#             -mcount 5                       \
-#             -seq {input[0]}                 \
-#             -ss {input[1]}                  \
-#             -rr {input[2]}                  \
-#             -o {params[0]}
-#         """
-# 
-# rule distogram_to_contact:...
+rule create_pdb:
+    input:
+        "{base_dir}/data/our_input/sequences/{domain}.fasta",
+        "{base_dir}/data/our_input/secondary_structures/{domain}.{type}.ss",
+        "{base_dir}/data/our_input/contacts/{domain}.{type}.rr",
+    output:
+        "{base_dir}/data/our_input/confold_out/{domain}_{type}/stage2/{domain}_model1.pdb",
+    params:
+        "{base_dir}/data/our_input/confold_out/{domain}_{type}",
+        config["third_party_software"],
+    shell:
+        """
+        {params[1]}/confold-1.0/confold.pl  \
+            -rrtype ca                      \
+            -stage2 1                       \
+            -mcount 5                       \
+            -seq {input[0]}                 \
+            -ss {input[1]}                  \
+            -rr {input[2]}                  \
+            -o {params[0]}
+        """
+ 
+rule Y_to_confold:
+    input:
+        "{base_dir}/data/our_input/Y_tensors/{domain}.{type}.pt",
+        "{base_dir}/data/our_input/sequences/{domain}.fasta",
+    output:
+        "{base_dir}/data/our_input/contacts/{domain}.{type}.rr",
+        "{base_dir}/data/our_input/secondary_structures/{domain}.{type}.ss",
+    conda:
+        "envs/py_data.yml",
+    shell:
+        """
+        python {wildcards.base_dir}/scripts/alphafold/Y2confold.py  \
+            --in_file {input[0]}                                    \
+            --fa_file {input[1]}                                    \
+            --rr_file {output[0]}                                   \
+            --ss_file {output[1]}
+        """
  
 rule predict:
     input:
@@ -48,7 +64,7 @@ rule predict:
         "{base_dir}/data/our_input/model_270420/12.pt",
         "{base_dir}/data/our_input/tensors/{domain}_X.pt",
     output:
-        "{base_dir}/data/our_input/tensors_Y_pred/{domain}_Y.pt",
+        "{base_dir}/data/our_input/Y_tensors/{domain}.pred.pt",
     conda:
         "envs/py_data.yml",
     shell:
