@@ -73,12 +73,13 @@ def train(
     model, loaded_domains, criterion, optimizer,
     crop_size, device, batch_size
 ):
-
+    model.train()
     lengths = [X.shape[3] for (X, _) in loaded_domains]
     max_length = max(lengths)
 
-    i_offset = random.randint(0, crop_size)
-    j_offset = random.randint(0, crop_size)
+    i_offset = random.randint(0, crop_size - 1)
+    j_offset = random.randint(0, crop_size - 1)
+    print(f'i = {i_offset}\tj = {j_offset}')
 
     for i in range(i_offset, max_length, crop_size):
         for j in range(j_offset, max_length, crop_size):
@@ -122,6 +123,7 @@ def evaluate(
     model, loaded_domains, criterion, crop_size, device
 ):
     with torch.no_grad():
+        model.eval()
         losses = []
         lengths = [X.shape[3] for (X, _) in loaded_domains]
         max_length = max(lengths)
@@ -232,7 +234,14 @@ model = AlphaFold(
     RESNET_depth=cfg['RESNET_depth'],
     crop_size=cfg['crop_size'],
     weights=cfg['weights']
-).to(device=device)
+)
+
+model.to(device=device)
+model.load_state_dict(
+    torch.load(
+        cfg['model_file'], map_location=device
+    )
+)
 
 criterion = torch.nn.CrossEntropyLoss()
 

@@ -27,7 +27,8 @@ max_epochs: 200
 available_domains: "/faststorage/project/deeply_thinking_potato/data/our_input/train_domains.csv"
 use_cuda: True
 batch_size: 8
-model_path: "/faststorage/project/deeply_thinking_potato/data/our_input/model_290420/{epoch}.pt"
+model_path: "/faststorage/project/deeply_thinking_potato/data/our_input/model_300420/{epoch}.pt"
+model_file: "/faststorage/project/deeply_thinking_potato/data/our_input/model_290420/121.pt"
 log_file: ""
 chunk_size: 512
 val_size: 32
