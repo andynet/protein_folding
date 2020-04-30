@@ -23,14 +23,17 @@ Y_files: "/faststorage/project/deeply_thinking_potato/data/our_input/Y_tensors/{
 num_workers: 16
 max_epochs: 200
 # max_domains: 2000   # 6000 corresponds to approx. 350GB of ram usage
-max_domains: 50
+# max_domains: 50
 available_domains: "/faststorage/project/deeply_thinking_potato/data/our_input/train_domains.csv"
 use_cuda: True
 batch_size: 8
 model_path: "/faststorage/project/deeply_thinking_potato/data/our_input/model_290420/{epoch}.pt"
 log_file: ""
+chunk_size: 512
+val_size: 32
 
 lr: "1e-3"
-l2: "1e-4"
-train_proportion: 0.8
+# l2: "1e-4"
+l2: "0.0"
+train_proportion: 0.98  # train=9208 validation=188
 seed: 0
