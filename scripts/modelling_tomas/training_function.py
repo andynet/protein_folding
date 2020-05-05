@@ -19,9 +19,10 @@ VALIDATION_SIZE = 250
 CPU_WORKERS = 16
 
 # %%
-def train(model, optimizer, 
+def train(model, optimizer,
           datapath,
           domains,
+          scheduler=None,
           EPOCHS=EPOCHS,
           BATCH_SIZE=BATCH_SIZE,
           ITERATION_DOMAINS=ITERATION_DOMAINS,
@@ -32,7 +33,7 @@ def train(model, optimizer,
    
     history = []
     min_loss = 100
-    
+
     with open('../../steps/domain_lengths.pkl', 'rb') as f:
         lengths = pickle.load(f)   
     
@@ -61,7 +62,7 @@ def train(model, optimizer,
                 if device == 'cuda':
                     batch_in, batch_out = batch_in.to("cuda"), batch_out.to("cuda")
                     
-                    model.fit(batch_in, batch_out, optimizer)
+                    model.fit(batch_in, batch_out, optimizer, scheduler)
                     
                     del batch_in, batch_out
                     torch.cuda.empty_cache()
@@ -82,12 +83,13 @@ def train(model, optimizer,
         end = time.time()
         print('Epoch {:2d}, Time: {:.2f}, Train Loss: {:.4f}, Validation Loss: {:.4f}'
                 .format(epoch, end - start, train_loss, val_loss))
+        
         np.savetxt(f'{datapath}/history.csv', history, delimiter=',', fmt='%.3f')
         
         if val_loss < min_loss:
             torch.save({'model': model.state_dict(),
-        #                'optimizer': optimizer.state_dict(),
-        #                'epoch': epoch + 1
+                        'optimizer': optimizer.state_dict(),
+                        'epoch': epoch + 1
         #                # 'archs':args.arch
                         },
                        f'{datapath}/model.pth')

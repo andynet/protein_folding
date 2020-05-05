@@ -27,14 +27,14 @@ CAC = 1.52
 CN = 1.33
 NCA = 1.45
 CACB = 1.52
-CACB = 1.52
 
-# minimal distance between two same atoms (C-C, N-N, CA-CA)
-CC = CN * torch.cos(np.pi - CNCA) + NCA + CAC * torch.cos(np.pi - NCAC)
-NN = NCA * torch.cos(np.pi - NCAC) + CAC + CN * torch.cos(np.pi - CACN)
-CACA = CAC * torch.cos(np.pi - CACN) + CN + NCA * torch.cos(np.pi - CNCA)
+
 
 # %%
+def vs(v):
+    """Size of a vector"""
+    return torch.sqrt(torch.sum(v ** 2))
+
 def cross_product(k, v):
 
     # definition of cross product
@@ -45,40 +45,41 @@ def cross_product(k, v):
     ])
     return cp
 
-# %%
-def calc_v(coords, atom):
-
-    if atom == 'N':
-        v_size = CN
-        angle = CACN
-    elif atom == 'CA':
-        v_size = NCA
-        angle = CNCA
-    elif atom == 'C':
-        v_size = CAC
-        angle = NCAC
-
-    k = coords[-1] - coords[-2]
-    k = k / torch.sqrt(torch.sum(k ** 2))
-
-    n = cross_product(coords[-3] - coords[-2], coords[-1] - coords[-2])
-    n = n / torch.sqrt(torch.sum(n ** 2))
-
-    v = torch.cos(np.pi - angle) * k + \
-        torch.sin(np.pi - angle) * cross_product(n, k)
-    return v * v_size
-
-
 # %% Rodrigues Formula
 def rodrigues(v, k, angle):
     """
     see: https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+     or the explanation in thesis :P
     """
     
     cp = cross_product(k, v)
     
     vrot = v * torch.cos(angle) + cp * torch.sin(angle) + k * (torch.sum(k * v) * (1 - torch.cos(angle)))
     return vrot
+
+# %%
+def calc_v(coords, atom):
+
+    if atom == 'N':
+        v_size = CN
+        angle = CACN + NCAC - np.pi
+    elif atom == 'CA':
+        v_size = NCA
+        angle = CACN + CNCA - np.pi
+    elif atom == 'C':
+        v_size = CAC
+        angle = CNCA + NCAC - np.pi
+
+    k = coords[-1] - coords[-2]
+    k = k / torch.sqrt(torch.sum(k ** 2))
+
+    v0 = coords[-3] - coords[-2]
+    v0 = v0 / torch.sqrt(torch.sum(v0 ** 2))
+
+    n = cross_product(v0, k)
+    n = n / vs(n)
+
+    return v_size * rodrigues(v0, n, angle)
 
 
 # %%
@@ -130,18 +131,15 @@ def place_cbeta(residue):
     v1 = residue[0] - residue[1]  # vector CA-N
     v2 = residue[2] - residue[1]  # vector CA-C
 
-    v1_scaled = CAC * (v1 / torch.sqrt(torch.sum(v1 ** 2)))
+    v1_scaled = CAC * (v1 / vs(v1))
 
     n = v2 - v1_scaled
-    n = n / torch.sqrt(torch.sum(n ** 2))
+    n = n / vs(n)
 
     k = cross_product(v2, v1)
-    k = k / torch.sqrt(torch.sum(k ** 2))
+    k = k / vs(k)
 
-    v = torch.cos(CCACB) * k + \
-            torch.sin(CCACB) * cross_product(n, k)
-
-    return v * CACB + residue[1]
+    return rodrigues(k, n, CCACB) * CACB + residue[1]
 
 # %%
 def G(phi, psi, sequence):
@@ -171,7 +169,7 @@ def G(phi, psi, sequence):
     while i < len(sequence):       
         # backbone atoms
         atoms = ['N', 'CA', 'C']
-        angles = [np.pi - psi[i - 1], np.pi - torch.tensor(np.pi), np.pi - phi[i - 1]]
+        angles = [psi[i - 1], torch.tensor(np.pi), phi[i - 1]]
 
         for j in range(3):
             atom = calc_atom_coords(backbone, atoms[j], angles[j])
@@ -209,7 +207,7 @@ def G_full(phi, psi, sequence):
            
     for i in range(len(phi)):
         atoms = ['N', 'CA', 'C']
-        angles = [np.pi - psi[i], np.pi - torch.tensor(np.pi), np.pi - phi[i]]
+        angles = [psi[i], torch.tensor(np.pi), phi[i]]
 
         for j in range(3):
             atom = calc_atom_coords(backbone, atoms[j], angles[j])

@@ -56,7 +56,7 @@ class ConvNet(nn.Module):
         for i in range(self.HIDDEN):
             x = torch.relu(self.bnlist[i](self.convlist[i](x)))
 
-        return F.log_softmax(self.convOut(x), dim=0)
+        return F.log_softmax(self.convOut(x), dim=1)
 
     def fit(self, X, Y, optimizer):
         self.train()

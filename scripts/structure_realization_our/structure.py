@@ -22,13 +22,11 @@ NCA = 1.45
 CACB = 1.52
 CACB = 1.52
 
-class Structure:
-    def __init__(self, phi, psi, Y, seq):
-        self.phi = phi
-        self.psi = psi
-        self.Y = Y
-        self.seq = seq
-    
+
+class Geometry_tools:
+    def __init__(self):
+        return self
+       
     def cross_product(self, k, v):
         # definition of cross product
         cp = torch.tensor([
@@ -53,23 +51,24 @@ class Structure:
         
         if atom == 'N':
             v_size = CN
-            angle = CACN
+            angle = CACN + NCAC - np.pi
         elif atom == 'CA':
             v_size = NCA
-            angle = CNCA
+            angle = CACN + CNCA - np.pi
         elif atom == 'C':
             v_size = CAC
-            angle = NCAC
+            angle = CNCA + NCAC - np.pi
 
         k = coords[-1] - coords[-2]
         k = k / torch.sqrt(torch.sum(k ** 2))
 
-        n = self.cross_product(coords[-3] - coords[-2], coords[-1] - coords[-2])
+        v0 = coords[-3] - coords[-2]
+        v0 = v0 / torch.sqrt(torch.sum(v0 ** 2))
+
+        n = self.cross_product(v0, k)
         n = n / torch.sqrt(torch.sum(n ** 2))
 
-        v = torch.cos(np.pi - angle) * k + \
-            torch.sin(np.pi - angle) * self.cross_product(n, k)
-        return v * v_size
+        return v_size * self.rodrigues(v0, n, angle)
     
     def rodrigues(self, v, k, angle):
         """
@@ -134,10 +133,15 @@ class Structure:
         k = self.cross_product(v2, v1)
         k = k / torch.sqrt(torch.sum(k ** 2))
 
-        v = torch.cos(CCACB) * k + \
-                torch.sin(CCACB) * self.cross_product(n, k)
+        return self.rodrigues(k, n, CCACB) * CACB + residue[1]
+    
 
-        return v * CACB + residue[1]
+class Structure(Geometry_tools):
+    def __init__(self, phi, psi, Y, seq):
+        self.phi = phi
+        self.psi = psi
+        self.Y = Y
+        self.seq = seq
     
     def G(self):
         """
@@ -177,7 +181,7 @@ class Structure:
             
             # backbone atoms
             atoms = ['N', 'CA', 'C']
-            angles = [np.pi - self.psi[i - 1], np.pi - torch.tensor(np.pi), np.pi - self.phi[i - 1]]
+            angles = [self.psi[i-1], torch.tensor(np.pi), self.phi[i-1]]
 
             for j in range(3):
                 atom = self.calc_atom_coords(backbone, atoms[j], angles[j])
@@ -214,34 +218,35 @@ class Structure:
                 2D tensor of Backbone coordinates
                 2D tensor of C-beta coordinates
         """
+        
+        with torch.no_grad():
+            # Initialize coordinates <=> place first 3 atoms in the space
+            backbone = torch.tensor([[0, NCA * torch.sin(np.pi - NCAC), 0],  # N
+                           [NCA * torch.cos(np.pi - NCAC), 0, 0],          # CA
+                           [NCA * torch.cos(np.pi - NCAC) + CAC, 0, 0],    # C
+                          ])
 
-        # Initialize coordinates <=> place first 3 atoms in the space
-        backbone = torch.tensor([[0, NCA * torch.sin(np.pi - NCAC), 0],  # N
-                       [NCA * torch.cos(np.pi - NCAC), 0, 0],          # CA
-                       [NCA * torch.cos(np.pi - NCAC) + CAC, 0, 0],    # C
-                      ])
+            for i in range(len(self.phi)):
+                atoms = ['N', 'CA', 'C']
+                angles = [self.psi[i], torch.tensor(np.pi), self.phi[i]]
+                
+                for j in range(3):
+                    atom = self.calc_atom_coords(backbone, atoms[j], angles[j])
+                    backbone = torch.cat((backbone, atom.view(1, 3)))
 
-        for i in range(len(self.phi)):
-            atoms = ['N', 'CA', 'C']
-            angles = [np.pi - self.psi[i], np.pi - torch.tensor(np.pi), np.pi - self.phi[i]]
+            # cbeta atoms
+            cbeta_coords = torch.empty((sum([i != 'G' for i in self.seq]), 3))
 
-            for j in range(3):
-                atom = self.calc_atom_coords(backbone, atoms[j], angles[j])
-                backbone = torch.cat((backbone, atom.view(1, 3)))
+            it = 0
+            for i in range(len(self.seq)):
+                if self.seq[i] != 'G':
+                    cbeta = self.place_cbeta(backbone[(i*3):(i*3+3)])
+                    cbeta_coords[it] = cbeta
+                    it += 1
 
-        # cbeta atoms
-        cbeta_coords = torch.empty((sum([i != 'G' for i in self.seq]), 3))
-
-        it = 0
-        for i in range(len(self.seq)):
-            if self.seq[i] != 'G':
-                cbeta = self.place_cbeta(backbone[(i*3):(i*3+3)])
-                cbeta_coords[it] = cbeta
-                it += 1
-
-        return backbone, cbeta_coords
+            return backbone, cbeta_coords
     
-    def visualize_structure(self):
+    def visualize_structure(self, img_path=None):
         """
         Visualizes the entire structure: backbone + C-beta atoms
 
@@ -276,44 +281,7 @@ class Structure:
         ax = fig.gca(projection='3d')
         ax.plot(coords[:, 0], coords[:, 1], coords[:, 2])
         
-################## THIS DOESNT WORK!!! #######################
-    def calc_prob(self, x, _mean, _sd):
-        """
-        Calculates the output of a probability function at value x. The probability function
-        is normal with center at _mean and standard deviation _sd
-        """
-
-        return torch.exp(- (1 / 2) * ((x - _mean) / _sd) ** 2) / (_sd * torch.sqrt(torch.tensor(2 * np.pi)))
-    
-    def loss(self, pred, sd = torch.tensor(4)):
-        """NLL loss"""
+        if img_path is not None:
+            plt.savefig(img_path)
+            plt.close(fig)
         
-        loss = 0
-
-        for i in range(len(pred) - 1):
-            for j in range(i + 1, len(pred)):
-                prob = self.calc_prob(pred[i, j], self.Y[i, j], sd)
-                loss += torch.log(prob)
-        return -loss
-    
-    def optimize(self, iterations=10, lr=1e-5, lr_decay = 1, verbose=1):
-    
-        history = []
-        for i in range(iterations):
-            if self.phi.grad is not None:
-                self.phi.grad.zero_()
-            if self.psi.grad is not None:
-                self.psi.grad.zero_()
-
-            temp_distmap = self.G()
-            L = self.loss(temp_distmap, self.Y)
-            L.backward()
-            self.phi = (self.phi - lr * self.phi.grad).detach().requires_grad_()
-            self.psi = (self.psi - lr * self.psi.grad).detach().requires_grad_()
-
-            if verbose is not None:
-                if i % verbose == 0:
-                    print(f'Iteration {i}, Loss: {L.item()}')
-            history.append([i, L.item()])
-            lr /= lr_decay
-        return np.array(history)
