@@ -8,6 +8,9 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from copy import copy
+from Bio.PDB.Polypeptide import one_to_three
+from datetime import date
 
 # Angles
 CNCA = torch.tensor(np.radians(122))
@@ -137,12 +140,21 @@ class Geometry_tools:
     
 
 class Structure(Geometry_tools):
-    def __init__(self, phi, psi, Y, seq):
+    def __init__(self, domain, phi, psi, seq):
+        
+        self.domain = domain
         self.phi = phi
         self.psi = psi
-        self.Y = Y
+        self.torsion = torch.cat((phi, psi)).requires_grad_()
         self.seq = seq
     
+        if len(self.phi) != len(self.psi):
+            return 'torsion angle lengths do not match'
+        
+        if len(self.phi) != len(self.seq) - 1:
+            return 'length of torsion angles has to be one less than the sequence'
+        
+        
     def G(self):
         """
         Create differentiable protein geometry
@@ -156,11 +168,7 @@ class Structure(Geometry_tools):
             2D tensor of coordinates
         """
         
-        if len(self.phi) != len(self.psi):
-            return 'torsion angle lengths do not match'
-        
-        if len(self.phi) != len(self.seq) - 1:
-            return 'length of torsion angles has to be one less than the sequence'
+        phi, psi = self.torsion[:len(self.torsion)//2], self.torsion[len(self.torsion)//2:]
         
         dist_mat_atoms = torch.empty((len(self.seq), 3))
 
@@ -181,8 +189,9 @@ class Structure(Geometry_tools):
             
             # backbone atoms
             atoms = ['N', 'CA', 'C']
-            angles = [self.psi[i-1], torch.tensor(np.pi), self.phi[i-1]]
-
+            #angles = [self.psi[i-1], torch.tensor(np.pi), self.phi[i-1]]
+            angles = [psi[i-1], torch.tensor(np.pi), phi[i-1]]
+            
             for j in range(3):
                 atom = self.calc_atom_coords(backbone, atoms[j], angles[j])
                 backbone = torch.cat((backbone, atom.view(1, 3)))
@@ -201,7 +210,7 @@ class Structure(Geometry_tools):
             for j in range(i + 1, len(self.seq)):
                 dist_map[i, j] = torch.sqrt(torch.sum((dist_mat_atoms[i] - dist_mat_atoms[j]) ** 2))
 
-        return dist_map
+        return dist_map + dist_map.t()
     
     def G_full(self):
         """
@@ -220,6 +229,7 @@ class Structure(Geometry_tools):
         """
         
         with torch.no_grad():
+            phi, psi = self.torsion[:len(self.torsion)//2], self.torsion[len(self.torsion)//2:]
             # Initialize coordinates <=> place first 3 atoms in the space
             backbone = torch.tensor([[0, NCA * torch.sin(np.pi - NCAC), 0],  # N
                            [NCA * torch.cos(np.pi - NCAC), 0, 0],          # CA
@@ -228,7 +238,8 @@ class Structure(Geometry_tools):
 
             for i in range(len(self.phi)):
                 atoms = ['N', 'CA', 'C']
-                angles = [self.psi[i], torch.tensor(np.pi), self.phi[i]]
+                #angles = [self.psi[i], torch.tensor(np.pi), self.phi[i]]
+                angles = [psi[i], torch.tensor(np.pi), phi[i]]
                 
                 for j in range(3):
                     atom = self.calc_atom_coords(backbone, atoms[j], angles[j])
@@ -246,42 +257,111 @@ class Structure(Geometry_tools):
 
             return backbone, cbeta_coords
     
+    def copy(self):
+        return copy(self)
+    
     def visualize_structure(self, img_path=None):
         """
         Visualizes the entire structure: backbone + C-beta atoms
 
         In the first step generates a list of residue coordinates:
             If Glycin: only N, CA, C atoms are present.
-            Else: N, CA, CB, CA, C (the CA is there twice to make the plotting easier)
-        
-        
+            Else: N, CA, CB, CA, C (the CA is there twice to make the plotting easier)        
         """
-        backbone, cbeta_coords = self.G_full()
+        with torch.no_grad():
+            backbone, cbeta_coords = self.G_full()
 
-        fig = plt.figure()
+            fig = plt.figure()
 
-        entire_structure = torch.empty((len(backbone) + 2 * len(cbeta_coords), 3))
+            entire_structure = torch.empty((len(backbone) + 2 * len(cbeta_coords), 3))
 
-        it = 0
-        cb_it = 0
-        for i in range(len(self.seq)):
-            N, CA, C = backbone[(3 * i):(3 * i + 3)]
+            it = 0
+            cb_it = 0
+            for i in range(len(self.seq)):
+                N, CA, C = backbone[(3 * i):(3 * i + 3)]
 
-            if self.seq[i] != 'G':
-                CB = cbeta_coords[cb_it]
-                cb_it += 1
-                entire_structure[it:(it+5)] = torch.cat([N, CA, CB, CA, C]).view((5, 3))
-                it += 5
-            else:
-                entire_structure[it:(it+3)] = torch.cat([N, CA, C]).view((3, 3))
-                it += 3      
+                if self.seq[i] != 'G':
+                    CB = cbeta_coords[cb_it]
+                    cb_it += 1
+                    entire_structure[it:(it+5)] = torch.cat([N, CA, CB, CA, C]).view((5, 3))
+                    it += 5
+                else:
+                    entire_structure[it:(it+3)] = torch.cat([N, CA, C]).view((3, 3))
+                    it += 3      
 
-        coords = entire_structure.data.numpy()
+            coords = entire_structure.data.numpy()
 
-        ax = fig.gca(projection='3d')
-        ax.plot(coords[:, 0], coords[:, 1], coords[:, 2])
+            ax = fig.gca(projection='3d')
+            ax.plot(coords[:, 0], coords[:, 1], coords[:, 2])
+
+            if img_path is not None:
+                plt.savefig(img_path)
+                plt.close(fig)
+    
+    
+    def pdb_atom(self, ind, a, aa, chain, pos, xyz):
+        """
+        PDB file ATOM template
+        Input:
+            ind  : int, atom index
+            a    : str, atom ('N', 'CA', 'C' or 'CB')
+            aa   : char, one letter aminoacid name
+            chain: char, chain id character
+            pos  : aminoacid position
+            xyz  : list of coordinates
         
-        if img_path is not None:
-            plt.savefig(img_path)
-            plt.close(fig)
+        Output:
+            atom: pdb like ATOM list
+        """
+        atom = 'ATOM {:>6}  {:3} {:3} {:1} {:>4}   '.format(ind, a, one_to_three(aa), chain, pos)
+        atom += '{:7.3f} {:7.3f} {:7.3f} X X X'.format(xyz[0], xyz[1], xyz[2])
+        return atom
+
+    def pdb_coords(self, domain_start=0, output_dir=None):
+        """
+        Coordinates in PDB format
+        
+        Input:
+            self        : structure
+            domain_start: index of domain start position
+        Output:
+            list of pdb_atom lists
+        """
+        backbone, cbeta = structure.G_full()
+        seq = structure.seq
+
+        # Round
+        backbone = np.round(backbone.data.numpy(), 4)
+        cbeta = np.round(cbeta.data.numpy(), 4)
+
+        coords_full = []
+
+        ind = 0
+        bind = 0 # backbone ind
+        cbind = 0
+        for i in range(len(seq)):
+
+            # Backbone atoms
+            for j, a in enumerate(['N', 'CA', 'C']):
+                coords_full.append(pdb_atom(ind + j, a, seq[i], chain, position_start + i, backbone[bind+j]))
+
+            ind += 3
+
+            # C beta atom
+            if seq[i] != 'G':
+                coords_full.append(pdb_atom(ind, 'CB', seq[i], chain, position_start + i, cbeta[cbind]))
+                cbind += 1
+                ind += 1
+
+            bind += 3
+        
+        if output_dir is not None:
+            with open(f'{output_dir}/{self.domain}_pred.pdb', 'w') as f:
+                f.write('HEADER ' + str(date.today()) + '\n')
+                f.write(f'TITLE Prediction of {self.domain}\n')
+                f.write('AUTHOR Thinking Potato\n')
+                for i in range(len(c)):
+                    f.write(coords_full[i] + '\n')
+        else:
+            return coords_full
         

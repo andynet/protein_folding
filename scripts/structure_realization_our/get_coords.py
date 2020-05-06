@@ -11,7 +11,7 @@ def str_to_int(s):
     return int(s)
 
 domains = {}
-with open('../../data/our_input/cath-domain-seqs-S35.fa') as f:
+with open('../skola/Thesis/pdb_files/s35_data/cath-domain-seqs-S35.fa') as f:
     while True:
         info = f.readline()
         if info == '':
@@ -44,7 +44,7 @@ def get_coords(domain):
         chain_id = ' '
     
     # Extract Chain from the Domain
-    structure = PDBParser().get_structure('', f'../../data/pdbfiles/{domain_id}.pdb')
+    structure = PDBParser().get_structure('', f'../skola/Thesis/pdb_files/pdbfiles/{domain_id}.pdb')
     chain = structure[0][chain_id]
     
     coords_list = []
@@ -76,8 +76,7 @@ def get_coords(domain):
                                         atom.fullname.strip(),
                                         x, y, z])
             except:
-                print('Atom not found')
-                return
+                return 'Atom not found'
                 #if residue_number < domain_start:
                 #    atom = residue.child_list[0] # just append any atom, it doesnt matter
                 #else:
@@ -98,8 +97,7 @@ def get_coords(domain):
                                         atom.fullname.strip(),
                                         x, y, z])                  
             except:
-                print('Atom not found')
-                return
+                return 'Atom not found'
                 #if residue_number < domain_start:
                 #    atom = residue.child_list[0] # just append any atom, it doesnt matter
                 #else:

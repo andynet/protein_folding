@@ -142,7 +142,7 @@ def place_cbeta(residue):
     return rodrigues(k, n, CCACB) * CACB + residue[1]
 
 # %%
-def G(phi, psi, sequence):
+def G(torsion, sequence):
     """
     Calculate the backbone coordinates + C-beta satisfying the input torsion angles.
     The sequence has to be inputed in order to know whether a residue is glycin or not.
@@ -151,6 +151,7 @@ def G(phi, psi, sequence):
     Outputs distance map
     """
     
+    phi, psi = torsion[:len(torsion)//2], torsion[len(torsion)//2:]
     dist_mat_atoms = torch.empty((len(sequence), 3))
     
     # Initialize coordinates <=> place first 3 atoms in the space
@@ -193,12 +194,13 @@ def G(phi, psi, sequence):
 
 
 # %%
-def G_full(phi, psi, sequence):
+def G_full(torsion, sequence):
     """
     Calculate the backbone coordinates + C-beta satisfying the input torsion angles.
     The sequence has to be inputed in order to know whether a residue is glycin or not.
     """
     
+    phi, psi = torsion[:len(torsion)//2], torsion[len(torsion)//2:]
     # Initialize coordinates <=> place first 3 atoms in the space
     backbone = torch.tensor([[0, NCA * torch.sin(np.pi - NCAC), 0],  # N
                    [NCA * torch.cos(np.pi - NCAC), 0, 0],          # CA
