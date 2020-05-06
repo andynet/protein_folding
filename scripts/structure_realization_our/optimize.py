@@ -9,6 +9,7 @@ import numpy as np
 from distributions import *
 from structure import Structure
 from copy import copy
+import pickle
 
 def NLLLoss(structure, distogram, vmphi, vmpsi):
     """
@@ -59,12 +60,31 @@ def optimize(domain,
              verbose=1, 
              img_dir=None):
     """
-    Optimize structure (phi and psi angles) given a label
+    Gradient Descent Algorithm for optimizing Protein Structures
+    
+    Input:
+        domain             : str, domain name\n
+        kappa_scalar       : float, how much should be the von Mises narrowed, default=8\n
+        iterations         : int, iterations of the gradient descent algorithm\n
+        lr                 : float, learning rate\n
+        lr_decay           : float, learning rate decay\n
+        decay_frequency    : how often should the lr be adjusted by multiplying by lr_decay\n
+        normalize_gradients: bool, default=True\n
+        momentum           : float, momentum parameter\n
+        nesterov           : bool, default=False, Nesterov Momentum\n
+        verbose            : how often should the program print info about losses\n
+        img_dir            : dir where intermediate structure plots should be saved, by default this is disabled\n
+        
+    Output:
+        best_structure: structure with minimal loss\n
+        s0            : initial structure\n
+        min_loss      : loss of the best structure\n
+        history       : history of learning
     """
     
     # Load predicted data
     
-    with open(f'outputs/{domain}.out', 'rb') as f:
+    with open(f'../../steps/predicted_outputs/{domain}.out', 'rb') as f:
         d = pickle.load(f)
     
     distogram, phi, psi = d['distogram'], d['phi'], d['psi']
@@ -82,20 +102,15 @@ def optimize(domain,
     vmpsi = fit_vm(psi)
     
     # load sequence
-    # with open(f'../../data/our_input/sequences/{domain}.fasta') as f:
-    #     f.readline()  # fasta header
-    #     seq = f.readline()
-    
-    #seq = domains[f'{domain}'][2]
-    with open('1a02F00.fasta') as f:
-        f.readline()
+    with open(f'../../data/our_input/sequences/{domain}.fasta') as f:
+        f.readline()  # fasta header
         seq = f.readline()
     
     # Create Structure - Model of protein geometry
-    structure = Structure(phi_sample, psi_sample, seq)
+    structure = Structure(domain, phi_sample, psi_sample, seq)
     s0 = copy(structure)
-    # OPTIMIZE, OPTIMIZE, OPTIMIZE
     
+    # OPTIMIZE, OPTIMIZE, OPTIMIZE
     history = []
     min_loss = np.inf
     

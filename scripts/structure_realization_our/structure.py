@@ -7,7 +7,6 @@ Protein Geometry Class
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from copy import copy
 from Bio.PDB.Polypeptide import one_to_three
 from datetime import date
@@ -41,7 +40,7 @@ class Geometry_tools:
     
     def calc_v(self, coords, atom):
         """
-        Calculate vector in the plane of previous 3 atoms in the direction 
+        Calculate vector in the plane of previous 3 atoms in the direction
         of the target atom
         
         Input:
@@ -91,7 +90,7 @@ class Geometry_tools:
 
         vrot = v * torch.cos(angle) + cp * torch.sin(angle) + k * (torch.sum(k * v) * (1 - torch.cos(angle)))
         return vrot
-    
+
     def calc_atom_coords(self, coords, atom, angle):
         """
         Calculate coordinates of a new atom given list of coordinates of at least 
@@ -154,7 +153,6 @@ class Structure(Geometry_tools):
         if len(self.phi) != len(self.seq) - 1:
             return 'length of torsion angles has to be one less than the sequence'
         
-        
     def G(self):
         """
         Create differentiable protein geometry
@@ -168,7 +166,7 @@ class Structure(Geometry_tools):
             2D tensor of coordinates
         """
         
-        phi, psi = self.torsion[:len(self.torsion)//2], self.torsion[len(self.torsion)//2:]
+        phi, psi = self.torsion[:len(self.torsion) // 2], self.torsion[len(self.torsion) // 2:]
         
         dist_mat_atoms = torch.empty((len(self.seq), 3))
 
@@ -324,12 +322,14 @@ class Structure(Geometry_tools):
         Input:
             self        : structure
             domain_start: index of domain start position
+            output_dir  : path to a directory where pdb file should be stored
         Output:
             list of pdb_atom lists
         """
-        backbone, cbeta = structure.G_full()
-        seq = structure.seq
-
+        backbone, cbeta = self.G_full()
+        seq = self.seq
+        
+        chain = self.domain[4]
         # Round
         backbone = np.round(backbone.data.numpy(), 4)
         cbeta = np.round(cbeta.data.numpy(), 4)
@@ -343,13 +343,13 @@ class Structure(Geometry_tools):
 
             # Backbone atoms
             for j, a in enumerate(['N', 'CA', 'C']):
-                coords_full.append(pdb_atom(ind + j, a, seq[i], chain, position_start + i, backbone[bind+j]))
+                coords_full.append(self.pdb_atom(ind + j, a, seq[i], chain, domain_start + i, backbone[bind+j]))
 
             ind += 3
 
             # C beta atom
             if seq[i] != 'G':
-                coords_full.append(pdb_atom(ind, 'CB', seq[i], chain, position_start + i, cbeta[cbind]))
+                coords_full.append(self.pdb_atom(ind, 'CB', seq[i], chain, domain_start + i, cbeta[cbind]))
                 cbind += 1
                 ind += 1
 
@@ -360,7 +360,7 @@ class Structure(Geometry_tools):
                 f.write('HEADER ' + str(date.today()) + '\n')
                 f.write(f'TITLE Prediction of {self.domain}\n')
                 f.write('AUTHOR Thinking Potato\n')
-                for i in range(len(c)):
+                for i in range(len(coords_full)):
                     f.write(coords_full[i] + '\n')
         else:
             return coords_full
