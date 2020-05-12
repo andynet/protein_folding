@@ -87,6 +87,7 @@ def train(model, optimizer,
         np.savetxt(f'{datapath}/history.csv', history, delimiter=',', fmt='%.3f')
         
         if val_loss < min_loss:
+            min_loss = val_loss
             torch.save({'model': model.state_dict(),
                         'optimizer': optimizer.state_dict(),
                         'epoch': epoch + 1

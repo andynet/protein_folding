@@ -3,14 +3,18 @@
 """
 Structure Optimization
 """
-
+# %%
 import torch
 import numpy as np
 from distributions import *
 from structure import Structure
 from copy import copy
 import pickle
+import argparse
+import os
 
+
+# %%
 def NLLLoss(structure, distogram, vmphi, vmpsi):
     """
     Loss Function consisting of two potentials:
@@ -48,6 +52,9 @@ def NLLLoss(structure, distogram, vmphi, vmpsi):
 
 
 def optimize(domain,
+             structure_path='',
+             random_state=1,
+             output_dir=None,
              kappa_scalar=8,
              iterations=100, 
              lr=1e-3, 
@@ -57,13 +64,17 @@ def optimize(domain,
              normalize_gradients=True,
              momentum=0,
              nesterov=False,
-             verbose=1, 
-             img_dir=None):
+             verbose=-1, 
+             img_dir=None,
+             initial_structure=False):
     """
     Gradient Descent Algorithm for optimizing Protein Structures
     
     Input:
         domain             : str, domain name\n
+        structure_path     : path where Structure is saved. If not provided a new object is created\n
+        random_state       : int, for sampling angles from von Mises distribution\n
+        output_dir         : path to directory where the output dict should be saved\n
         kappa_scalar       : float, how much should be the von Mises narrowed, default=8\n
         iterations         : int, iterations of the gradient descent algorithm\n
         lr                 : float, learning rate\n
@@ -72,15 +83,18 @@ def optimize(domain,
         normalize_gradients: bool, default=True\n
         momentum           : float, momentum parameter\n
         nesterov           : bool, default=False, Nesterov Momentum\n
-        verbose            : how often should the program print info about losses\n
+        verbose            : how often should the program print info about losses. Default=iterations/20\n
         img_dir            : dir where intermediate structure plots should be saved, by default this is disabled\n
+        initial_structure  : bool, whether initial structure should be saved and outputed
         
     Output:
         best_structure: structure with minimal loss\n
-        s0            : initial structure\n
+        (s0            : initial structure\n)
         min_loss      : loss of the best structure\n
         history       : history of learning
     """
+    if verbose == -1:
+        verbose = int(np.ceil(iterations / 20))
     
     # Load predicted data
     
@@ -95,20 +109,27 @@ def optimize(domain,
     psi = psi[:, :, :, :-1]
     
     # sample angles from von Mises distribution fitted to each histogram in angleograms
-    phi_sample, psi_sample = sample_torsion(phi, psi, kappa_scalar)
+    phi_sample, psi_sample = sample_torsion(phi, psi, kappa_scalar, random_state)
     
     # fit continuous von Mises distribution to each histogram in angleograms
     vmphi = fit_vm(phi)
     vmpsi = fit_vm(psi)
     
-    # load sequence
-    with open(f'../../data/our_input/sequences/{domain}.fasta') as f:
-        f.readline()  # fasta header
-        seq = f.readline()
+    if structure_path == '':
+        # load sequence
+        with open(f'../../data/our_input/sequences/{domain}.fasta') as f:
+            f.readline()  # fasta header
+            seq = f.readline()
+        
+        # Create Structure - Model of protein geometry
+        structure = Structure(domain, phi_sample, psi_sample, seq)
+    else:
+        with open(f'{structure_path}', 'rb') as f:
+            opt = pickle.load(f)
+            structure = opt['best_structure']
     
-    # Create Structure - Model of protein geometry
-    structure = Structure(domain, phi_sample, psi_sample, seq)
-    s0 = copy(structure)
+    if initial_structure:
+        s0 = copy(structure)
     
     # OPTIMIZE, OPTIMIZE, OPTIMIZE
     history = []
@@ -125,13 +146,18 @@ def optimize(domain,
         if structure.torsion.grad is not None:
             structure.torsion.grad.zero_()
         
-        if nesterov:
+        if nesterov is True or nesterov == 'True' or nesterov == 'T':
             structure.torsion = (structure.torsion + momentum * V).detach().requires_grad_()
             
         L = NLLLoss(structure, distogram, vmphi, vmpsi)
+        
+        if L.item() < min_loss:
+            best_structure = copy(structure)
+            min_loss = L.item()
+        
         L.backward()
 
-        if normalize_gradients:
+        if normalize_gradients is True or normalize_gradients == 'True' or normalize_gradients == 'T':
             # normalize gradients
             structure.torsion.grad = (structure.torsion.grad - torch.mean(structure.torsion.grad)) / torch.std(structure.torsion.grad)
         
@@ -140,10 +166,13 @@ def optimize(domain,
         
         structure.torsion = (structure.torsion + V).detach().requires_grad_()
         
-        if verbose is not None:
-            if i % verbose == 0:
+        if verbose != 0:
+            if i % verbose == 0 or i == iterations - 1:
                 print(f'Iteration {i}, Loss: {L.item()}')
-                
+            
+        if L.item() == np.inf or L.item() == -np.inf or L.item() is None:
+            return
+        
         history.append([i, L.item()])
         
         if i % decay_frequency == 0 and i > 0:
@@ -158,5 +187,17 @@ def optimize(domain,
         
         if lr < min_lr:
             break
+    
+    if output_dir is not None:
+        d = {'beststructure':best_structure, 'loss':min_loss, 'history':history}
+        
+        with open('{}/{}_{:04d}_pred.pkl'.format(output_dir, domain, random_state), 'wb') as f:
+            pickle.dump(d, f)
             
-    return best_structure, s0, min_loss, np.array(history)
+    elif initial_structure:
+        return best_structure, s0, min_loss, np.array(history)
+    else:
+        return best_structure, min_loss, np.array(history)
+
+
+        

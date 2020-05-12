@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 from copy import copy
 from Bio.PDB.Polypeptide import one_to_three
 from datetime import date
+from mpl_toolkits.mplot3d import Axes3D
+import pickle
+from distributions import *
 
 # Angles
 CNCA = torch.tensor(np.radians(122))
@@ -27,8 +30,8 @@ CACB = 1.52
 
 class Geometry_tools:
     def __init__(self):
-        return self
-       
+        return
+    
     def cross_product(self, k, v):
         # definition of cross product
         cp = torch.tensor([
@@ -77,6 +80,8 @@ class Geometry_tools:
         Rotate vector "v" by a angle around basis vector "k"
         see: https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
         
+        My Implementation - commented is official rodrigues formula
+        
         Input:
             v    : a 1D torch tensor
             k    : a 1D unit torch tensor
@@ -86,9 +91,28 @@ class Geometry_tools:
             rotated vector: 1D torch tensor
         """
 
-        cp = self.cross_product(k, v)
+        #cp = self.cross_product(k, v)
 
-        vrot = v * torch.cos(angle) + cp * torch.sin(angle) + k * (torch.sum(k * v) * (1 - torch.cos(angle)))
+        #vrot = v * torch.cos(angle) + cp * torch.sin(angle) + k * (torch.sum(k * v) * (1 - torch.cos(angle)))
+        
+        # redefine axis system to 3 new axes with unit vectors n, k and m
+        n = self.cross_product(k, v)
+        n = n / torch.sqrt(torch.sum(n ** 2))
+
+        m = self.cross_product(n, k)
+        m = m / torch.sqrt(torch.sum(m ** 2))
+
+        kv = torch.sum(k * v)
+        mv = torch.sum(m * v)
+
+        v_s = torch.sqrt(torch.sum(v ** 2))
+
+        k_axis = k * kv
+        n_axis = n * torch.sin(angle) * mv
+        m_axis = m * torch.cos(angle) * mv
+
+        vrot = k_axis + n_axis + m_axis
+        
         return vrot
 
     def calc_atom_coords(self, coords, atom, angle):
@@ -139,19 +163,42 @@ class Geometry_tools:
     
 
 class Structure(Geometry_tools):
-    def __init__(self, domain, phi, psi, seq):
-        
+    def __init__(self, domain, random_state=1618, kappa=8):
         self.domain = domain
-        self.phi = phi
-        self.psi = psi
-        self.torsion = torch.cat((phi, psi)).requires_grad_()
-        self.seq = seq
-    
-        if len(self.phi) != len(self.psi):
-            return 'torsion angle lengths do not match'
+        self.random_state = random_state
         
-        if len(self.phi) != len(self.seq) - 1:
-            return 'length of torsion angles has to be one less than the sequence'
+        # Load Predictions
+        with open(f'../../steps/predicted_outputs/{domain}.out', 'rb') as f:
+            d = pickle.load(f)
+
+        self.distogram, phi, psi = d['distogram'], d['phi'], d['psi']
+        
+        # remove first phi angle and last psi angle
+        # necessary because the first atom we place is Nitrogen and last is Carbon-C
+        phi = phi[:, :, :, 1:]
+        psi = psi[:, :, :, :-1]
+
+        # sample angles from von Mises distribution fitted to each histogram in angleograms
+        phi_sample, psi_sample = sample_torsion(phi, psi, kappa_scalar=kappa, random_state=random_state)
+
+        # fit continuous von Mises distribution to each histogram in angleograms
+        self.vmphi = fit_vm(phi)
+        self.vmpsi = fit_vm(psi)
+
+        with open(f'../../data/our_input/sequences/{domain}.fasta') as f:
+            f.readline()  # fasta header
+            seq = f.readline()
+        
+        self.torsion = torch.cat((phi_sample, psi_sample)).requires_grad_()
+        self.seq = seq
+        
+        self.opt = torch.optim.LBFGS([self.torsion])
+        
+        #if len(self.phi) != len(self.psi):
+        #    return 'torsion angle lengths do not match'
+        
+        #if len(self.phi) != len(self.seq) - 1:
+        #    return 'length of torsion angles has to be one less than the sequence'
         
     def G(self):
         """
@@ -210,6 +257,89 @@ class Structure(Geometry_tools):
 
         return dist_map + dist_map.t()
     
+    def copy(self):
+        return copy(self)
+    
+    def NLLLoss(self, distogram, vmphi, vmpsi):
+        """
+        Loss Function consisting of two potentials:
+            distance potential
+            torsion angle potential
+
+        distance potential is the log of a probability of a distance value
+        from a distribution to which a cubic spline is fitted
+
+        angle potential 
+        """
+
+        x = torch.linspace(2, 22, 31)
+        xtorsion = torch.linspace(-np.pi, np.pi, 36)
+
+        loss = 0
+        # DISTANCE POTENTIAL
+        distance_map = self.G()
+        for i in range(len(distance_map)):
+            for j in range(len(distance_map)):
+                if i == j:
+                    pass
+                else:
+                    loss += 1/2 * torch.log(max(torch.tensor(0.001),
+                                                interp(x, distogram[1:, i, j], min(torch.tensor(22), 
+                                                                                   distance_map[i, j]))))
+        # TORSION ANGLE POTENTIAL
+        for i in range(len(self.torsion) // 2):
+            # torsion angle loss phi
+            loss += vmphi[i].log_prob(self.torsion[i])
+            # torsion angle loss psi
+            loss += vmpsi[i].log_prob(self.torsion[len(self.torsion) // 2 + i])
+
+        return -loss
+    
+    def optimize(self, iterations, output_dir='', verbose=1):
+        """
+        L-BFGS Structure optimization
+        
+        Input:
+            iterations: int, Number of iterations
+            output_dir: path where a dictionary with best structure, its loss and history should be saved
+            verbose   : controls the frequency of printing.  
+        """
+        
+        
+        min_loss = np.inf
+        history = []
+        for i in range(iterations):
+            
+            def closure():
+                self.opt.zero_grad()
+                L = self.NLLLoss(self.distogram, self.vmphi, self.vmpsi)
+                L.backward()
+                return L
+            
+            with torch.no_grad():
+                loss = self.NLLLoss(self.distogram, self.vmphi, self.vmpsi)
+            
+            if verbose > 0:
+                if i % verbose == 0:
+                    print('Iteration: {:03d}, Loss: {:7.3f}'.format(i, loss.item()))
+                
+            if loss.item() < min_loss:
+                min_loss = loss.item()
+                best_structure = self.copy()
+                
+            history.append([i, loss.item()])
+            #start = time.time()
+            self.opt.step(closure)
+            #print(time.time() - start)
+            
+        if output_dir != '':
+            o = {'structure':best_structure, 'loss':min_loss, 'history':history}
+            with open(f'{output_dir}/{self.domain}_{self.random_state}.pkl', 'wb') as f:
+                pickle.dump(o, f)
+        else:
+            return best_structure, min_loss, history
+    
+
     def G_full(self):
         """
         Calculate the backbone coordinates + C-beta satisfying the input torsion angles.
@@ -234,7 +364,7 @@ class Structure(Geometry_tools):
                            [NCA * torch.cos(np.pi - NCAC) + CAC, 0, 0],    # C
                           ])
 
-            for i in range(len(self.phi)):
+            for i in range(len(phi)):
                 atoms = ['N', 'CA', 'C']
                 #angles = [self.psi[i], torch.tensor(np.pi), self.phi[i]]
                 angles = [psi[i], torch.tensor(np.pi), phi[i]]
@@ -254,10 +384,7 @@ class Structure(Geometry_tools):
                     it += 1
 
             return backbone, cbeta_coords
-    
-    def copy(self):
-        return copy(self)
-    
+
     def visualize_structure(self, img_path=None):
         """
         Visualizes the entire structure: backbone + C-beta atoms

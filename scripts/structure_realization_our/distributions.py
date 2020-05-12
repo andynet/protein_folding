@@ -58,6 +58,8 @@ def randvonmises(anglegram, i, kappa_scalar=8, random_state=1):
     """
     Sample random value from a von Mises distribution fitted to a histogram
     """
+    np.random.seed(random_state)
+    
     xtorsion = torch.linspace(-np.pi, np.pi, 36)
     
     vmexp = torch.sum(xtorsion * anglegram[0, 1:, 0, i])
@@ -72,15 +74,15 @@ def randvonmises(anglegram, i, kappa_scalar=8, random_state=1):
     return randvar
 
 
-def sample_torsion(phi, psi, kappa_scalar=8):
+def sample_torsion(phi, psi, kappa_scalar=8, random_state=1):
     """
     Samples one value from each von mises distribution fitted to
     each histogram. Kappa is calculated as 1/var * kappa_scalar, to
     make it more narrow
     """
     
-    phi_sample = torch.tensor(np.round([randvonmises(phi, i, kappa_scalar) for i in range(phi.shape[3])], 4))
-    psi_sample = torch.tensor(np.round([randvonmises(psi, i, kappa_scalar) for i in range(psi.shape[3])], 4))
+    phi_sample = torch.tensor(np.round([randvonmises(phi, i, kappa_scalar, random_state) for i in range(phi.shape[3])], 4))
+    psi_sample = torch.tensor(np.round([randvonmises(psi, i, kappa_scalar, random_state) for i in range(psi.shape[3])], 4))
     return phi_sample, psi_sample
 
 
