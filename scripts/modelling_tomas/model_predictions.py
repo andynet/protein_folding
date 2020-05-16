@@ -11,6 +11,7 @@ import torch
 from predict import predict_outputs
 import matplotlib.pyplot as plt
 from Inception_aux import Inception_aux
+from AlphaFold import AlphaFold
 import pickle
 
 # %% model
@@ -40,3 +41,18 @@ plt.imshow(torch.argmax(p16pk['distogram'], dim=0), cmap='viridis_r')
 
 with open('trials/16pk.out', 'wb') as f:
     pickle.dump(p16pk, f)
+    
+# %% LOAD ALPHAFOLD
+model = AlphaFold()#.to('cuda')
+
+#sd = torch.load('../../steps/alphafold_results/model.pth')
+sd = torch.load('../../steps/alphafold_results/model.pth', map_location=torch.device('cpu'))
+model.load_state_dict(sd['model'])
+
+# %% Predict 139lA00
+p139l = predict_outputs(model, '139lA00')
+
+plt.imshow(torch.argmax(p139l['distogram'], dim=0), cmap='viridis_r')
+
+with open('../../steps/predicted_outputs/139lA00.out', 'wb') as f:
+    pickle.dump(p139l, f)

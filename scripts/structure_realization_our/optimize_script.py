@@ -20,10 +20,10 @@ parser.add_argument('-o', '--outputdir', metavar='', required=False, help='Direc
 parser.add_argument('-i', '--iterations', type=int, metavar='', required=False, help='Number of iterations', default=100)
 parser.add_argument('-lr', '--learningrate', type=float, metavar='', required=False, help='Learning rate', default=1.0)
 parser.add_argument('-ld', '--lrdecay', type=float, metavar='', required=False, help='Learning rate decay parameter', default=1.0)
-parser.add_argument('-f', '--decayfrequency', type=int, metavar='', required=False, help='Learning rate Decay frequency', default=10)
+parser.add_argument('-f', '--decayfrequency', type=int, metavar='', required=False, help='Learning rate Decay frequency', default=100)
 parser.add_argument('-m', '--momentum', type=float, metavar='', required=False, help='momentum parameter', default=0.0)
 parser.add_argument('-nm', '--nesterov', metavar='', required=False, help='Nesterov Momentum', default='False')
-parser.add_argument('-v', '--verbose', type=int, metavar='', required=False, help='How often should the program print info about losses. Default=iterations/20', default=0)
+parser.add_argument('-v', '--verbose', type=int, metavar='', required=False, help='How often should the program print info about losses. Default=iterations/20', default=-1)
 
 args = parser.parse_args()
 
@@ -37,7 +37,7 @@ if __name__ == '__main__':
                  iterations=args.iterations,
                  lr=args.learningrate,
                  lr_decay=args.lrdecay,
-                 decay_frequency=args.lrdecay,
+                 decay_frequency=args.decayfrequency,
                  momentum=args.momentum,
                  nesterov=args.nesterov,
                  verbose=args.verbose
@@ -49,7 +49,8 @@ if __name__ == '__main__':
             with open(f'{args.outputdir}/temp_{args.domain}/{args.domain}_{i}.sh', 'w') as f:
                 f.write('#!/bin/bash\n')
                 f.write('#SBATCH --mem=4g\n')
-                f.write('#SBATCH -t 300\n')
+                f.write('#SBATCH -t 1000\n')
+                f.write(f'#SBATCH -o ../../steps/garbage/{args.domain}-%j.out\n')
                 f.write(f'python3 optimize_script.py -d {args.domain} -r {i} -o {args.outputdir}/{args.domain} -i {args.iterations} -lr {args.learningrate} -ld {args.lrdecay} -f {args.decayfrequency} -m {args.momentum} -nm {args.nesterov} -v {args.verbose}')
             os.system(f"sbatch {args.outputdir}/temp_{args.domain}/{args.domain}_{i}.sh")
                 

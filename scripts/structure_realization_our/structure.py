@@ -18,13 +18,13 @@ from distributions import *
 CNCA = torch.tensor(np.radians(122))
 NCAC = torch.tensor(np.radians(111))
 CACN = torch.tensor(np.radians(116))
-CCACB = torch.tensor(np.radians(120))
+CCACB = torch.tensor(np.radians(150)) # this is the angle between the plane
+    # where backbone atoms are and vector CACB (counter-closkwise)
 
 # distances
 CAC = 1.52
 CN = 1.33
 NCA = 1.45
-CACB = 1.52
 CACB = 1.52
 
 
