@@ -15,7 +15,7 @@ import os
 
 
 # %%
-def NLLLoss(structure, distogram, vmphi, vmpsi):
+def NLLLoss(structure, distogram, vmphi=None, vmpsi=None, normal=False):
     """
     Loss Function consisting of two potentials:
         distance potential
@@ -29,24 +29,29 @@ def NLLLoss(structure, distogram, vmphi, vmpsi):
     
     x = torch.linspace(2, 22, 31)
     xtorsion = torch.linspace(-np.pi, np.pi, 36)
-    
     loss = 0
+    
     # DISTANCE POTENTIAL
     distance_map = structure.G()
-    for i in range(len(distance_map)):
-        for j in range(len(distance_map)):
-            if i == j:
-                pass
-            else:
-                loss += 1/2 * torch.log(max(torch.tensor(0.001),
-                                            interp(x, distogram[1:, i, j], min(torch.tensor(22), 
-                                                                               distance_map[i, j]))))
-    # TORSION ANGLE POTENTIAL
-    for i in range(len(structure.torsion) // 2):
-        # torsion angle loss phi
-        loss += vmphi[i].log_prob(structure.torsion[i])
-        # torsion angle loss psi
-        loss += vmpsi[i].log_prob(structure.torsion[len(structure.torsion) // 2 + i])
+    if normal:
+        for i in range(len(distance_map) - 1):
+            for j in range(i, len(distance_map)):
+                loss += torch.log(max(torch.tensor(0.0001), 
+                                      normal_distr(distance_map[i, j], structure.normal_params[0, i, j], structure.normal_params[1, i, j])))
+        
+    else:  # fit cubic spline to histograms
+        for i in range(len(distance_map) - 1):
+            for j in range(i, len(distance_map)):
+                loss += torch.log(max(torch.tensor(0.001),
+                                      interp(x, distogram[1:, i, j], min(torch.tensor(22), 
+                                                                         distance_map[i, j]))))
+    if vmphi is not None:
+        # TORSION ANGLE POTENTIAL
+        for i in range(len(structure.torsion) // 2):
+            # torsion angle loss phi
+            loss += vmphi[i].log_prob(structure.torsion[i])
+            # torsion angle loss psi
+            loss += vmpsi[i].log_prob(structure.torsion[len(structure.torsion) // 2 + i])
 
     return -loss
 
@@ -54,14 +59,17 @@ def NLLLoss(structure, distogram, vmphi, vmpsi):
 def optimize(domain,
              structure_path='',
              random_state=1,
+             normal=False, # whether normal distr should be fitted instead of a cubic spline
              output_dir=None,
              kappa_scalar=8,
              iterations=100, 
+             angle_potential = True,
              lr=1e-3, 
              lr_decay=1,
              min_lr=1e-10,
-             decay_frequency=10,
+             decay_frequency=100,
              normalize_gradients=True,
+             scale_gradients=False,
              momentum=0,
              nesterov=False,
              verbose=-1, 
@@ -99,7 +107,7 @@ def optimize(domain,
         verbose = int(np.ceil(iterations / 20))
     
     if structure_path == '':
-        structure = Structure(domain, random_state, kappa_scalar)
+        structure = Structure(domain, random_state, kappa_scalar, angle_potential, normal)
     else:
         with open(f'{structure_path}', 'rb') as f:
             opt = pickle.load(f)
@@ -126,17 +134,21 @@ def optimize(domain,
         if nesterov is True or nesterov == 'True' or nesterov == 'T':
             structure.torsion = (structure.torsion + momentum * V).detach().requires_grad_()
             
-        L = NLLLoss(structure, structure.distogram, structure.vmphi, structure.vmpsi)
+        L = NLLLoss(structure, structure.distogram, structure.vmphi, structure.vmpsi, normal)
         
         if L.item() < min_loss:
             best_structure = copy(structure)
             min_loss = L.item()
         
         L.backward()
-
+        
+        #print(structure.torsion.grad[:5])
         if normalize_gradients is True or normalize_gradients == 'True' or normalize_gradients == 'T':
             # normalize gradients
             structure.torsion.grad = (structure.torsion.grad - torch.mean(structure.torsion.grad)) / torch.std(structure.torsion.grad)
+        elif scale_gradients:
+            # gradients raging from -1 to 1
+            structure.torsion.grad = structure.torsion.grad / torch.max(torch.abs(structure.torsion.grad))
         
         # Implementing momentum
         V = momentum * V - lr * structure.torsion.grad

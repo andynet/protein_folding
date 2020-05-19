@@ -103,3 +103,39 @@ def fit_vm(anglegram, kappa_scalar=8):
         vm = pyro.distributions.von_mises.VonMises(vmexp, vmkappa)
         distros.append(vm)
     return distros
+
+# Normal distribution
+
+def calc_moments(distribution):
+    """
+    Calculate mean and standard deviation of a distribution
+    """
+    x = torch.linspace(2, 22, 31)
+    d_mean = torch.sum(x * distribution)
+    d_var = torch.sum(x ** 2 * distribution) - d_mean ** 2
+    
+    return d_mean, torch.sqrt(d_var)
+
+
+def normal_distr(x, mu, sigma):
+    """
+    Find probability of a value "x" in a normal distribution with mean
+    "mu" and standard deviation "sigma"
+    """
+    
+    return 1/(sigma * torch.sqrt(torch.tensor(2 * np.pi))) * torch.exp((-1/2) * ((x - mu) / sigma) ** 2)
+
+def fit_normal(distogram):
+    """
+    This just calculates means and standard deviation of all histograms
+    and saves it into a 3D tensor with depth 2
+    """
+    L = distogram.shape[1]
+    params = torch.empty((2, L, L))
+    
+    for i in range(L):
+        for j in range(L):
+            m, s = calc_moments(distogram[1:, i, j])
+            params[0, i, j], params[1, i, j] = m, s 
+    
+    return params

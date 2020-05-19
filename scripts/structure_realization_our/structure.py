@@ -13,6 +13,7 @@ from datetime import date
 from mpl_toolkits.mplot3d import Axes3D
 import pickle
 from distributions import *
+import time
 
 # Angles
 CNCA = torch.tensor(np.radians(122))
@@ -163,7 +164,7 @@ class Geometry_tools:
     
 
 class Structure(Geometry_tools):
-    def __init__(self, domain, random_state=1618, kappa=8):
+    def __init__(self, domain, random_state=1618, kappa=8, angle_potential=True, normal=False):
         self.domain = domain
         self.random_state = random_state
         
@@ -172,7 +173,6 @@ class Structure(Geometry_tools):
             d = pickle.load(f)
 
         self.distogram, phi, psi = d['distogram'], d['phi'], d['psi']
-        
         # remove first phi angle and last psi angle
         # necessary because the first atom we place is Nitrogen and last is Carbon-C
         phi = phi[:, :, :, 1:]
@@ -182,8 +182,12 @@ class Structure(Geometry_tools):
         phi_sample, psi_sample = sample_torsion(phi, psi, kappa_scalar=kappa, random_state=random_state)
 
         # fit continuous von Mises distribution to each histogram in angleograms
-        self.vmphi = fit_vm(phi)
-        self.vmpsi = fit_vm(psi)
+        if angle_potential or angle_potential == 'True':
+            self.vmphi = fit_vm(phi)
+            self.vmpsi = fit_vm(psi)
+        else:
+            self.vmphi = None
+            self.vmpsi = None
 
         with open(f'../../data/our_input/sequences/{domain}.fasta') as f:
             f.readline()  # fasta header
@@ -192,8 +196,9 @@ class Structure(Geometry_tools):
         self.torsion = torch.cat((phi_sample, psi_sample)).requires_grad_()
         self.seq = seq
         
-        self.opt = torch.optim.LBFGS([self.torsion])
-        
+        self.normal = normal
+        if normal:
+            self.normal_params = fit_normal(self.distogram)
         #if len(self.phi) != len(self.psi):
         #    return 'torsion angle lengths do not match'
         
@@ -255,12 +260,12 @@ class Structure(Geometry_tools):
             for j in range(i + 1, len(self.seq)):
                 dist_map[i, j] = torch.sqrt(torch.sum((dist_mat_atoms[i] - dist_mat_atoms[j]) ** 2))
 
-        return dist_map + dist_map.t()
+        return dist_map #+ dist_map.t()
     
     def copy(self):
         return copy(self)
     
-    def NLLLoss(self, distogram, vmphi, vmpsi):
+    def NLLLoss(self):
         """
         Loss Function consisting of two potentials:
             distance potential
@@ -274,28 +279,33 @@ class Structure(Geometry_tools):
 
         x = torch.linspace(2, 22, 31)
         xtorsion = torch.linspace(-np.pi, np.pi, 36)
-
         loss = 0
+
         # DISTANCE POTENTIAL
         distance_map = self.G()
-        for i in range(len(distance_map)):
-            for j in range(len(distance_map)):
-                if i == j:
-                    pass
-                else:
-                    loss += 1/2 * torch.log(max(torch.tensor(0.001),
-                                                interp(x, distogram[1:, i, j], min(torch.tensor(22), 
-                                                                                   distance_map[i, j]))))
-        # TORSION ANGLE POTENTIAL
-        for i in range(len(self.torsion) // 2):
-            # torsion angle loss phi
-            loss += vmphi[i].log_prob(self.torsion[i])
-            # torsion angle loss psi
-            loss += vmpsi[i].log_prob(self.torsion[len(self.torsion) // 2 + i])
+        if self.normal:
+            for i in range(len(distance_map) - 1):
+                for j in range(i, len(distance_map)):
+                    loss += torch.log(max(torch.tensor(0.0001), 
+                                          normal_distr(distance_map[i, j], self.normal_params[0, i, j], self.normal_params[1, i, j])))
+
+        else:  # fit cubic spline to histograms
+            for i in range(len(distance_map) - 1):
+                for j in range(i, len(distance_map)):
+                    loss += torch.log(max(torch.tensor(0.001),
+                                          interp(x, self.distogram[1:, i, j], min(torch.tensor(22), 
+                                                                             distance_map[i, j]))))
+        if self.vmphi is not None:
+            # TORSION ANGLE POTENTIAL
+            for i in range(len(self.torsion) // 2):
+                # torsion angle loss phi
+                loss += self.vmphi[i].log_prob(self.torsion[i])
+                # torsion angle loss psi
+                loss += self.vmpsi[i].log_prob(self.torsion[len(self.torsion) // 2 + i])
 
         return -loss
     
-    def optimize(self, iterations, output_dir='', verbose=1):
+    def optimize(self, iterations, lr=1, output_dir='', verbose=1, **kwargs):
         """
         L-BFGS Structure optimization
         
@@ -305,19 +315,20 @@ class Structure(Geometry_tools):
             verbose   : controls the frequency of printing.  
         """
         
+        opt = torch.optim.LBFGS([self.torsion], lr=lr, **kwargs)
         
         min_loss = np.inf
         history = []
         for i in range(iterations):
             
             def closure():
-                self.opt.zero_grad()
-                L = self.NLLLoss(self.distogram, self.vmphi, self.vmpsi)
+                opt.zero_grad()
+                L = self.NLLLoss()
                 L.backward()
                 return L
             
             with torch.no_grad():
-                loss = self.NLLLoss(self.distogram, self.vmphi, self.vmpsi)
+                loss = self.NLLLoss()
             
             if verbose > 0:
                 if i % verbose == 0:
@@ -328,13 +339,13 @@ class Structure(Geometry_tools):
                 best_structure = self.copy()
                 
             history.append([i, loss.item()])
-            #start = time.time()
-            self.opt.step(closure)
-            #print(time.time() - start)
+            start = time.time()
+            opt.step(closure)
+            print(time.time() - start)
             
         if output_dir != '':
             o = {'structure':best_structure, 'loss':min_loss, 'history':history}
-            with open(f'{output_dir}/{self.domain}_{self.random_state}.pkl', 'wb') as f:
+            with open(f'{output_dir}/{self.domain}_{self.random_state}_{lr}.pkl', 'wb') as f:
                 pickle.dump(o, f)
         else:
             return best_structure, min_loss, history
@@ -439,7 +450,11 @@ class Structure(Geometry_tools):
             atom: pdb like ATOM list
         """
         atom = 'ATOM {:>6}  {:3} {:3} {:1} {:>4}   '.format(ind, a, one_to_three(aa), chain, pos)
-        atom += '{:7.3f} {:7.3f} {:7.3f} X X X'.format(xyz[0], xyz[1], xyz[2])
+        if 'C' in a:
+            last_char = 'C'
+        else:
+            last_char = 'N'
+        atom += '{:7.3f} {:7.3f} {:7.3f} X X {}'.format(xyz[0], xyz[1], xyz[2], last_char)
         return atom
 
     def pdb_coords(self, domain_start=0, output_dir=None):

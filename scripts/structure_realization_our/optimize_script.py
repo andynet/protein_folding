@@ -18,6 +18,7 @@ parser.add_argument('-s', '--structurepath', metavar='', required=False, help='p
 parser.add_argument('-r', '--randomstate', type=int, metavar='', required=False, help='Domain Name', default=1)
 parser.add_argument('-o', '--outputdir', metavar='', required=False, help='Directory where the output should be saved', default='./')
 parser.add_argument('-i', '--iterations', type=int, metavar='', required=False, help='Number of iterations', default=100)
+parser.add_argument('-ap', '--anglepotential', metavar='', required=False, help='If angle potential should be used for the calculation of Loss', default='True')
 parser.add_argument('-lr', '--learningrate', type=float, metavar='', required=False, help='Learning rate', default=1.0)
 parser.add_argument('-ld', '--lrdecay', type=float, metavar='', required=False, help='Learning rate decay parameter', default=1.0)
 parser.add_argument('-f', '--decayfrequency', type=int, metavar='', required=False, help='Learning rate Decay frequency', default=100)
@@ -51,6 +52,6 @@ if __name__ == '__main__':
                 f.write('#SBATCH --mem=4g\n')
                 f.write('#SBATCH -t 1000\n')
                 f.write(f'#SBATCH -o ../../steps/garbage/{args.domain}-%j.out\n')
-                f.write(f'python3 optimize_script.py -d {args.domain} -r {i} -o {args.outputdir}/{args.domain} -i {args.iterations} -lr {args.learningrate} -ld {args.lrdecay} -f {args.decayfrequency} -m {args.momentum} -nm {args.nesterov} -v {args.verbose}')
+                f.write(f'python3 optimize_script.py -d {args.domain} -r {i} -o {args.outputdir}/{args.domain} -i {args.iterations} -ap {args.anglepotential} -lr {args.learningrate} -ld {args.lrdecay} -f {args.decayfrequency} -m {args.momentum} -nm {args.nesterov} -v {args.verbose}')
             os.system(f"sbatch {args.outputdir}/temp_{args.domain}/{args.domain}_{i}.sh")
                 
