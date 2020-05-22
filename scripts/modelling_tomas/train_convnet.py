@@ -8,7 +8,7 @@ BATCH_SIZE = 8
 ITERATION_DOMAINS = 500
 VALIDATION_SIZE = 250
 CPU_WORKERS = 16
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 0.001
 WEIGHT_DECAY = 0
 
 train_domains = np.loadtxt('../../data/our_input/train_domains.csv', dtype='O')

@@ -35,13 +35,14 @@ def NLLLoss(structure, distogram, vmphi=None, vmpsi=None, normal=False):
     distance_map = structure.G()
     if normal:
         for i in range(len(distance_map) - 1):
-            for j in range(i, len(distance_map)):
+            for j in range(i + 1, len(distance_map)):
+                mu, sigma, s = structure.normal_params[0, i, j], structure.normal_params[1, i, j], structure.normal_params[2, i, j]
                 loss += torch.log(max(torch.tensor(0.0001), 
-                                      normal_distr(distance_map[i, j], structure.normal_params[0, i, j], structure.normal_params[1, i, j])))
+                                      normal_distr(distance_map[i, j], mu, sigma, s)))
         
     else:  # fit cubic spline to histograms
         for i in range(len(distance_map) - 1):
-            for j in range(i, len(distance_map)):
+            for j in range(i + 1, len(distance_map)):
                 loss += torch.log(max(torch.tensor(0.001),
                                       interp(x, distogram[1:, i, j], min(torch.tensor(22), 
                                                                          distance_map[i, j]))))
@@ -69,6 +70,7 @@ def optimize(domain,
              min_lr=1e-10,
              decay_frequency=100,
              normalize_gradients=True,
+             normalize_gradients_2=False, # only divided by standard deviation
              scale_gradients=False,
              momentum=0,
              nesterov=False,
@@ -146,6 +148,8 @@ def optimize(domain,
         if normalize_gradients is True or normalize_gradients == 'True' or normalize_gradients == 'T':
             # normalize gradients
             structure.torsion.grad = (structure.torsion.grad - torch.mean(structure.torsion.grad)) / torch.std(structure.torsion.grad)
+        elif normalize_gradients_2:
+            structure.torsion.grad = structure.torsion.grad / torch.std(structure.torsion.grad)
         elif scale_gradients:
             # gradients raging from -1 to 1
             structure.torsion.grad = structure.torsion.grad / torch.max(torch.abs(structure.torsion.grad))
@@ -157,13 +161,13 @@ def optimize(domain,
         
         if verbose != 0:
             if i % verbose == 0 or i == iterations - 1:
-                print('Iteration {:03d}, Loss: {:.3f}'.format(i, L.item()))
+                print('Iteration {:03d}, Loss: {:.3f}'.format(i, L.item() - structure.min_theoretical_loss))
             
         if L.item() == np.inf or L.item() == -np.inf or L.item() is None:
             print('Loss = inf')
             return
         
-        history.append([i, L.item()])
+        history.append([i, L.item() - structure.min_theoretical_loss])
         
         if i % decay_frequency == 0 and i > 0:
             lr *= lr_decay

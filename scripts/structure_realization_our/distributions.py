@@ -104,7 +104,10 @@ def fit_vm(anglegram, kappa_scalar=8):
         distros.append(vm)
     return distros
 
-# Normal distribution
+
+
+
+# Normal distribution - DONT USE - THIS IS NOT FOR FITTING. THE DENSITY CAN BE HIGHER THAN 1!!!!
 
 def calc_moments(distribution):
     """
@@ -117,13 +120,13 @@ def calc_moments(distribution):
     return d_mean, torch.sqrt(d_var)
 
 
-def normal_distr(x, mu, sigma):
+def normal_distr(x, mu, sigma, s=1):
     """
     Find probability of a value "x" in a normal distribution with mean
     "mu" and standard deviation "sigma"
     """
     
-    return 1/(sigma * torch.sqrt(torch.tensor(2 * np.pi))) * torch.exp((-1/2) * ((x - mu) / sigma) ** 2)
+    return s * 1/(sigma * torch.sqrt(torch.tensor(2 * np.pi))) * torch.exp((-1/2) * ((x - mu) / sigma) ** 2)
 
 def fit_normal(distogram):
     """
@@ -131,11 +134,12 @@ def fit_normal(distogram):
     and saves it into a 3D tensor with depth 2
     """
     L = distogram.shape[1]
-    params = torch.empty((2, L, L))
+    params = torch.empty((3, L, L))
     
     for i in range(L):
         for j in range(L):
             m, s = calc_moments(distogram[1:, i, j])
-            params[0, i, j], params[1, i, j] = m, s 
+            scalar = torch.max(distogram[1:, i, j]) / normal_distr(m, m, s)
+            params[0, i, j], params[1, i, j], params[2, i, j] = m, s, scalar
     
     return params

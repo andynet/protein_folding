@@ -164,12 +164,12 @@ class Geometry_tools:
     
 
 class Structure(Geometry_tools):
-    def __init__(self, domain, random_state=1618, kappa=8, angle_potential=True, normal=False):
+    def __init__(self, domain, domain_path, random_state=1618, kappa=8, angle_potential=True, normal=False):
         self.domain = domain
         self.random_state = random_state
         
         # Load Predictions
-        with open(f'../../steps/predicted_outputs/{domain}.out', 'rb') as f:
+        with open(domain_path, 'rb') as f:
             d = pickle.load(f)
 
         self.distogram, phi, psi = d['distogram'], d['phi'], d['psi']
@@ -189,7 +189,7 @@ class Structure(Geometry_tools):
             self.vmphi = None
             self.vmpsi = None
 
-        with open(f'../../data/our_input/sequences/{domain}.fasta') as f:
+        with open(f'../../data/our_input/sequences_backup/{domain}.fasta') as f:
             f.readline()  # fasta header
             seq = f.readline()
         
@@ -199,11 +199,27 @@ class Structure(Geometry_tools):
         self.normal = normal
         if normal:
             self.normal_params = fit_normal(self.distogram)
+            # Calculate min theoretical loss
+            min_th_loss = 0
+            for i in range(self.distogram.shape[1] - 1):
+                for j in range(i + 1, self.distogram.shape[1]):
+                    mu, sigma, s = self.normal_params[0, i, j], self.normal_params[1, i, j], self.normal_params[2, i, j]
+                    min_th_loss -= torch.log(normal_distr(mu, mu, sigma, s))
+        else:
+            # Calculate min theoretical loss
+            min_th_loss = 0
+            for i in range(self.distogram.shape[1] - 1):
+                for j in range(i + 1, self.distogram.shape[1]):
+                    min_th_loss -= torch.log(torch.max(self.distogram[:, i, j]))
+        
+        self.min_theoretical_loss = min_th_loss.item()
         #if len(self.phi) != len(self.psi):
         #    return 'torsion angle lengths do not match'
         
         #if len(self.phi) != len(self.seq) - 1:
         #    return 'length of torsion angles has to be one less than the sequence'
+        
+        # Calculate min theoretical loss
         
     def G(self):
         """
@@ -285,13 +301,14 @@ class Structure(Geometry_tools):
         distance_map = self.G()
         if self.normal:
             for i in range(len(distance_map) - 1):
-                for j in range(i, len(distance_map)):
+                for j in range(i + 1, len(distance_map)):
+                    mu, sigma, s = self.normal_params[0, i, j], self.normal_params[1, i, j], self.normal_params[2, i, j]
                     loss += torch.log(max(torch.tensor(0.0001), 
-                                          normal_distr(distance_map[i, j], self.normal_params[0, i, j], self.normal_params[1, i, j])))
+                                          normal_distr(distance_map[i, j], mu, sigma, s)))
 
         else:  # fit cubic spline to histograms
             for i in range(len(distance_map) - 1):
-                for j in range(i, len(distance_map)):
+                for j in range(i + 1, len(distance_map)):
                     loss += torch.log(max(torch.tensor(0.001),
                                           interp(x, self.distogram[1:, i, j], min(torch.tensor(22), 
                                                                              distance_map[i, j]))))
@@ -330,15 +347,17 @@ class Structure(Geometry_tools):
             with torch.no_grad():
                 loss = self.NLLLoss()
             
+            loss_minus_th_loss = loss.item() - self.min_theoretical_loss
+            
             if verbose > 0:
                 if i % verbose == 0:
-                    print('Iteration: {:03d}, Loss: {:7.3f}'.format(i, loss.item()))
+                    print('Iteration: {:03d}, Loss: {:7.3f}'.format(i, loss_minus_th_loss))
                 
-            if loss.item() < min_loss:
-                min_loss = loss.item()
+            if loss_minus_th_loss < min_loss:
+                min_loss = loss_minus_th_loss
                 best_structure = self.copy()
                 
-            history.append([i, loss.item()])
+            history.append([i, loss_minus_th_loss])
             start = time.time()
             opt.step(closure)
             print(time.time() - start)
