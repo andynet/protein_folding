@@ -3,7 +3,7 @@ from ConvNet_aux import ConvNet_aux
 import torch
 import numpy as np
 
-EPOCHS = 50
+EPOCHS = 20
 BATCH_SIZE = 8
 ITERATION_DOMAINS = 500
 VALIDATION_SIZE = 250
@@ -16,7 +16,7 @@ train_domains = np.loadtxt('../../data/our_input/train_domains.csv', dtype='O')
 model = ConvNet_aux().to("cuda")
 opt = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY)
 
-train(model, opt, '../../steps/convnet_results/aux', train_domains, 
+train(model, opt, '../../steps/convnet_results/second', train_domains, 
       EPOCHS=EPOCHS,
       BATCH_SIZE=BATCH_SIZE,
       ITERATION_DOMAINS=ITERATION_DOMAINS,
