@@ -75,30 +75,41 @@ def write_ss(ss_seq, fa_file, ss_file):
 parser = argparse.ArgumentParser()
 parser.add_argument('--in_file', required=True)
 parser.add_argument('--fa_file', required=True)
+parser.add_argument('--type', required=True)
 parser.add_argument('--rr_file', required=True)
 parser.add_argument('--ss_file', required=True)
 args = parser.parse_args()
 
 # %%
 # args = argparse.Namespace()
-# # args.in_file = "/faststorage/project/deeply_thinking_potato/data/our_input/Y_tensors/1bkbA02.pred.pt"
-# args.in_file = "/faststorage/project/deeply_thinking_potato/data/our_input/Y_tensors/1bkbA02.real.pt"
-# args.fa_file = "/faststorage/project/deeply_thinking_potato/data/our_input/sequences/1bkbA02.fasta"
+# # os.path.common_prefix([])
+# common_prefix = "/faststorage/project/deeply_thinking_potato/data/our_input"
+# # args.in_file = f"{common_prefix}/Y_tensors_2020_04_30_model_93/139lA00.pred.pt"
+# args.in_file = f"{common_prefix}/Y_tensors/139lA00_Y.pt"
+# args.fa_file = f"{common_prefix}/sequences/139lA00.fasta"
+# args.type = "real"
+# args.rr_file = f"{common_prefix}/contacts/139lA00.pred.rr"
+# args.ss_file = f"{common_prefix}/secondary_structures/139lA00.pred.ss"
 
-# args.rr_file = "/faststorage/project/deeply_thinking_potato/data/our_input/contacts/1bkbA02.pred.rr"
-# args.ss_file = "/faststorage/project/deeply_thinking_potato/data/our_input/secondary_structures/1bkbA02.pred.ss"
+# %%
+# args = argparse.Namespace()
+# common_prefix = "/faststorage/project/deeply_thinking_potato"
+# args.in_file = f"{common_prefix}/steps/test_predictions/1a9xA08.pred.pt"
+# args.fa_file = f"{common_prefix}/data/our_input/sequences/1a9xA08.fasta"
+# args.type = "pred"
+# args.rr_file = f"{common_prefix}/contacts/1a9xA08.pred.rr"
+# args.ss_file = f"{common_prefix}/secondary_structures/1a9xA08.pred.ss"
 
 # %%
 threshold = 0.5
 high_bin = 11       # first bin predicting non-contact
-case = args.in_file.split('.')[-2]
 translation = {1: 'H', 2: 'E', 3: 'E', 4: 'H', 5: 'H', 6: 'C', 7: 'C', 8: 'C'}
 
 # %%
 Y = torch.load(args.in_file)
 
 # %%
-if case == 'pred':
+if args.type == 'pred':
     contacts = softmax(Y[0], dim=1)
     contacts = (contacts + contacts.permute((0, 1, 3, 2))) / 2
     contacts = contacts[:, 0:high_bin, :, :].sum(dim=1).squeeze().numpy()
@@ -108,7 +119,7 @@ if case == 'pred':
     ss_letters = [translation[x] for x in list(ss_codes)]
     ss_seq = ''.join(ss_letters)
 
-elif case == 'real':
+elif args.type == 'real':
     contacts = Y[0].numpy()
     contacts = contacts < high_bin
 
@@ -116,6 +127,6 @@ elif case == 'real':
     ss_letters = [translation[x] for x in list(ss_codes)]
     ss_seq = ''.join(ss_letters)
 
-
+# %%
 write(contacts, args.fa_file, args.rr_file)
 write_ss(ss_seq, args.fa_file, args.ss_file)
