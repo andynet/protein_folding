@@ -64,7 +64,7 @@ def optimize(domain,
              output_dir=None,
              kappa_scalar=8,
              iterations=100, 
-             angle_potential = True,
+             angle_potential=True,
              lr=1e-3, 
              lr_decay=1,
              min_lr=1e-10,
@@ -109,7 +109,8 @@ def optimize(domain,
         verbose = int(np.ceil(iterations / 20))
     
     if structure_path == '':
-        structure = Structure(domain, random_state, kappa_scalar, angle_potential, normal)
+        structure = Structure(domain=domain, domain_path=domain_path, random_state=random_state, 
+                          kappa_scalar=kappa_scalar, angle_potential=angle_potential, normal=normal)
     else:
         with open(f'{structure_path}', 'rb') as f:
             opt = pickle.load(f)

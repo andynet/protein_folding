@@ -63,7 +63,7 @@ def randvonmises(anglegram, i, kappa_scalar=8, random_state=1):
     xtorsion = torch.linspace(-np.pi, np.pi, 36)
     
     vmexp = torch.sum(xtorsion * anglegram[0, 1:, 0, i])
-    vmvar = torch.sum(xtorsion ** 2 * anglegram[0, 1:, 0, i]) - vmexp
+    vmvar = torch.sum(xtorsion ** 2 * anglegram[0, 1:, 0, i]) - vmexp ** 2
     vmkappa = 1 / vmvar
     
     randvar = vonmises.rvs(kappa=kappa_scalar * vmkappa, loc=vmexp)
@@ -97,17 +97,13 @@ def fit_vm(anglegram, kappa_scalar=8):
     
     for i in range(anglegram.shape[3]):
         vmexp = torch.sum(xtorsion * anglegram[0, 1:, 0, i])
-        vmvar = torch.sum(xtorsion ** 2 * anglegram[0, 1:, 0, i]) - vmexp
+        vmvar = torch.sum(xtorsion ** 2 * anglegram[0, 1:, 0, i]) - vmexp ** 2
         vmkappa = kappa_scalar / vmvar
         
         vm = pyro.distributions.von_mises.VonMises(vmexp, vmkappa)
         distros.append(vm)
     return distros
 
-
-
-
-# Normal distribution - DONT USE - THIS IS NOT FOR FITTING. THE DENSITY CAN BE HIGHER THAN 1!!!!
 
 def calc_moments(distribution):
     """

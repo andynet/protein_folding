@@ -14,6 +14,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import pickle
 from distributions import *
 import time
+from scipy.stats import vonmises
 
 # Angles
 CNCA = torch.tensor(np.radians(122))
@@ -164,55 +165,80 @@ class Geometry_tools:
     
 
 class Structure(Geometry_tools):
-    def __init__(self, domain, domain_path, random_state=1618, kappa=8, angle_potential=True, normal=False):
+    def __init__(self, domain, domain_path=None, isdict=False, random_state=1618, kappa_scalar=1, angle_potential=False, normal=False, torsion=None):
+        
         self.domain = domain
         self.random_state = random_state
         
-        # Load Predictions
-        with open(domain_path, 'rb') as f:
-            d = pickle.load(f)
+        if torsion is None:
+            # Load Predictions
+            if isdict:
+                with open(domain_path, 'rb') as f:
+                    d = pickle.load(f)
 
-        self.distogram, phi, psi = d['distogram'], d['phi'], d['psi']
-        # remove first phi angle and last psi angle
-        # necessary because the first atom we place is Nitrogen and last is Carbon-C
-        phi = phi[:, :, :, 1:]
-        psi = psi[:, :, :, :-1]
+                distogram, phi, psi = d['distogram'], d['phi'], d['psi']
+                self.distogram = 0.5 * (distogram + distogram.permute((0, 2, 1)))
+            else:
+                d = torch.load(domain_path)
+                L = d[0].shape[2]
+                distogram, phi, psi = d[0][0], d[2].view(1, 37, 1, L), d[3].view(1, 37, 1, L)
+                self.distogram = 0.5 * (distogram + distogram.permute((0, 2, 1)))
+            # remove first phi angle and last psi angle
+            # necessary because the first atom we place is Nitrogen and last is Carbon-C
+            phi = phi[:, :, :, 1:]
+            psi = psi[:, :, :, :-1]
 
-        # sample angles from von Mises distribution fitted to each histogram in angleograms
-        phi_sample, psi_sample = sample_torsion(phi, psi, kappa_scalar=kappa, random_state=random_state)
+            # sample angles from von Mises distribution fitted to each histogram in angleograms
+            phi_sample, psi_sample = sample_torsion(phi, psi, kappa_scalar=kappa_scalar, random_state=random_state)
 
-        # fit continuous von Mises distribution to each histogram in angleograms
-        if angle_potential or angle_potential == 'True':
-            self.vmphi = fit_vm(phi)
-            self.vmpsi = fit_vm(psi)
+            # fit continuous von Mises distribution to each histogram in angleograms
+            if angle_potential or angle_potential == 'True':
+                self.vmphi = fit_vm(phi, kappa_scalar)
+                self.vmpsi = fit_vm(psi, kappa_scalar)
+                
+                # calculate minimal angle loss
+                mal = 0
+                for i in self.vmphi:
+                    mal += np.log(vonmises.pdf(x = i.loc, loc=i.loc, kappa=i.concentration))
+                for i in self.vmpsi:
+                    mal += np.log(vonmises.pdf(x = i.loc, loc=i.loc, kappa=i.concentration))
+            
+                self.min_angle_loss = mal
+            else:
+                self.vmphi = None
+                self.vmpsi = None
+                
+                self.min_angle_loss = 0
+            self.torsion = torch.cat((phi_sample, psi_sample)).requires_grad_()
+        
+            self.normal = normal
+            if normal:
+                self.normal_params = fit_normal(self.distogram)
+                # Calculate min theoretical loss
+                min_th_loss = 0
+                for i in range(self.distogram.shape[1] - 1):
+                    for j in range(i + 1, self.distogram.shape[1]):
+                        mu, sigma, s = self.normal_params[0, i, j], self.normal_params[1, i, j], self.normal_params[2, i, j]
+                        min_th_loss -= torch.log(normal_distr(mu, mu, sigma, s))
+            else:
+                # Calculate min theoretical loss
+                min_th_loss = 0
+                for i in range(self.distogram.shape[1] - 1):
+                    for j in range(i + 1, self.distogram.shape[1]):
+                        min_th_loss -= torch.log(torch.max(self.distogram[:, i, j]))
+
+            self.min_theoretical_loss = min_th_loss.item()
+        
+        
         else:
-            self.vmphi = None
-            self.vmpsi = None
-
-        with open(f'../../data/our_input/sequences_backup/{domain}.fasta') as f:
+            self.torsion = torsion
+            
+        with open(f'../../data/our_input/sequences/{domain}.fasta') as f:
             f.readline()  # fasta header
             seq = f.readline()
         
-        self.torsion = torch.cat((phi_sample, psi_sample)).requires_grad_()
+        
         self.seq = seq
-        
-        self.normal = normal
-        if normal:
-            self.normal_params = fit_normal(self.distogram)
-            # Calculate min theoretical loss
-            min_th_loss = 0
-            for i in range(self.distogram.shape[1] - 1):
-                for j in range(i + 1, self.distogram.shape[1]):
-                    mu, sigma, s = self.normal_params[0, i, j], self.normal_params[1, i, j], self.normal_params[2, i, j]
-                    min_th_loss -= torch.log(normal_distr(mu, mu, sigma, s))
-        else:
-            # Calculate min theoretical loss
-            min_th_loss = 0
-            for i in range(self.distogram.shape[1] - 1):
-                for j in range(i + 1, self.distogram.shape[1]):
-                    min_th_loss -= torch.log(torch.max(self.distogram[:, i, j]))
-        
-        self.min_theoretical_loss = min_th_loss.item()
         #if len(self.phi) != len(self.psi):
         #    return 'torsion angle lengths do not match'
         
@@ -468,12 +494,12 @@ class Structure(Geometry_tools):
         Output:
             atom: pdb like ATOM list
         """
-        atom = 'ATOM {:>6}  {:3} {:3} {:1} {:>4}   '.format(ind, a, one_to_three(aa), chain, pos)
+        atom = 'ATOM {:>6}  {:3} {:3} {:1} {:>4}   '.format(ind + 1, a, one_to_three(aa), chain, pos + 1)
         if 'C' in a:
             last_char = 'C'
         else:
             last_char = 'N'
-        atom += '{:7.3f} {:7.3f} {:7.3f} X X {}'.format(xyz[0], xyz[1], xyz[2], last_char)
+        atom += '{:7.3f} {:7.3f} {:7.3f} {:6.3f} {:6.3f}           {}'.format(xyz[0], xyz[1], xyz[2], 1.0, 1.0, last_char)
         return atom
 
     def pdb_coords(self, domain_start=0, output_dir=None):
@@ -520,9 +546,13 @@ class Structure(Geometry_tools):
             with open(f'{output_dir}/{self.domain}_pred.pdb', 'w') as f:
                 f.write('HEADER ' + str(date.today()) + '\n')
                 f.write(f'TITLE Prediction of {self.domain}\n')
+                f.write(f'')
                 f.write('AUTHOR Thinking Potato\n')
                 for i in range(len(coords_full)):
                     f.write(coords_full[i] + '\n')
+                    
+                f.write('TER\n')
+                f.write('END\n')
         else:
             return coords_full
         

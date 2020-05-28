@@ -15,7 +15,7 @@ import os
 
 
 # %%
-def NLLLoss(structure, distogram, vmphi=None, vmpsi=None, normal=False):
+def NLLLoss(structure, distogram, vmphi=None, vmpsi=None, normal=False, distance_threshold=1000):
     """
     Loss Function consisting of two potentials:
         distance potential
@@ -37,7 +37,8 @@ def NLLLoss(structure, distogram, vmphi=None, vmpsi=None, normal=False):
         for i in range(len(distance_map) - 1):
             for j in range(i + 1, len(distance_map)):
                 mu, sigma, s = structure.normal_params[0, i, j], structure.normal_params[1, i, j], structure.normal_params[2, i, j]
-                loss += torch.log(max(torch.tensor(0.0001), 
+                if mu <= distance_threshold:
+                    loss += torch.log(max(torch.tensor(0.0001), 
                                       normal_distr(distance_map[i, j], mu, sigma, s)))
         
     else:  # fit cubic spline to histograms
@@ -61,6 +62,7 @@ def optimize(structure,
              normal=True, # whether normal distr should be fitted instead of a cubic spline
              iterations=100,
              iteration_start=0,
+             distance_threshold=1000,
              angle_potential=False,
              lr=1e-3,
              gradient_scaling='sddiv',  # one of ['sddiv', 'normal', 'absmaxdiv']
@@ -108,9 +110,9 @@ def optimize(structure,
         if nesterov is True or nesterov == 'True' or nesterov == 'T':
             structure.torsion = (structure.torsion + momentum * V).detach().requires_grad_()
             
-        L = NLLLoss(structure, structure.distogram, structure.vmphi, structure.vmpsi, normal)
+        L = NLLLoss(structure, structure.distogram, structure.vmphi, structure.vmpsi, normal, distance_threshold)
         
-        loss_minus_th_loss = L.item() - structure.min_theoretical_loss
+        loss_minus_th_loss = L.item() - structure.min_theoretical_loss - structure.min_angle_loss
         
         if loss_minus_th_loss < min_loss:
             best_structure = copy(structure)
@@ -152,23 +154,27 @@ def optimize_restarts(
         random_state=1,
         normal=True, # whether normal distr should be fitted instead of a cubic spline
         output_dir=None,
+        distance_threshold=1000,
         kappa_scalar=1,
-        iterations=100, 
+        iterations=200, 
         angle_potential=False,
-        restarts=3,
+        restarts=5,
         lr=1e-3, 
         lr_decay=0.1,
         gradient_scaling='sddiv',
         momentum=0,
         nesterov=False,
-        verbose=0):
+        verbose=0,
+        isdict=False):
     
     history = []
     initial_lr = lr
-    structure = Structure(domain, domain_path, random_state, kappa_scalar, angle_potential, normal)
+    structure = Structure(domain=domain, domain_path=domain_path, isdict=isdict, random_state=random_state, 
+                          kappa_scalar=kappa_scalar, angle_potential=angle_potential, normal=normal)
     for r in range(restarts):
         s, l, h = optimize(structure=structure, 
-                           normal=normal, 
+                           normal=normal,
+                           distance_threshold=distance_threshold,
                            iterations=iterations, 
                            iteration_start=r*iterations,
                            angle_potential=angle_potential,
@@ -203,7 +209,7 @@ if __name__ == '__main__':
     parser.add_argument('-k', '--kappascalar', metavar='', type=float, required=False, help='scale kappa of von Mises distribution. Default = 1', default=1.0)
     parser.add_argument('-i', '--iterations', type=int, metavar='', required=False, help='Number of iterations. Default = 200', default=200)
     parser.add_argument('-ap', '--anglepotential', metavar='', required=False, help='If angle potential should be used for the calculation of Loss. Default = False', default='False')
-    parser.add_argument('-r', '--restarts', type=int, metavar='', required=False, help='Number of restarts of the Optimization process from the best previous state with decreased learning rate. Default = 3', default=3)
+    parser.add_argument('-r', '--restarts', type=int, metavar='', required=False, help='Number of restarts of the Optimization process from the best previous state with decreased learning rate. Default = 5', default=5)
     parser.add_argument('-lr', '--learningrate', type=float, metavar='', required=False, help='Learning rate. Default = 0.01', default=0.01)
     parser.add_argument('-ld', '--lrdecay', type=float, metavar='', required=False, help='Learning rate decay parameter after each restart. Default = 0.1', default=0.1)
     parser.add_argument('-gr', '--gradientscaling', metavar='', required=False, help='What type of gradient scaling should be applied to the gradient. Options: sddiv (division by standard deviation), normal (standard normalization), absmaxdiv (division by the absolute maximum value). Default = sddiv', default='sddiv')
