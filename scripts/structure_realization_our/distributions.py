@@ -63,7 +63,8 @@ def randvonmises(anglegram, i, kappa_scalar=8, random_state=1):
     xtorsion = torch.linspace(-np.pi, np.pi, 36)
     
     vmexp = torch.sum(xtorsion * anglegram[0, 1:, 0, i])
-    vmvar = torch.sum(xtorsion ** 2 * anglegram[0, 1:, 0, i]) - vmexp ** 2
+    vmvar = torch.sum(anglegram[0, 1:, 0, i] * (xtorsion - vmexp) ** 2)
+    
     vmkappa = 1 / vmvar
     
     randvar = vonmises.rvs(kappa=kappa_scalar * vmkappa, loc=vmexp)
@@ -97,7 +98,7 @@ def fit_vm(anglegram, kappa_scalar=8):
     
     for i in range(anglegram.shape[3]):
         vmexp = torch.sum(xtorsion * anglegram[0, 1:, 0, i])
-        vmvar = torch.sum(xtorsion ** 2 * anglegram[0, 1:, 0, i]) - vmexp ** 2
+        vmvar = torch.sum(anglegram[0, 1:, 0, i] * (xtorsion - vmexp) ** 2)
         vmkappa = kappa_scalar / vmvar
         
         vm = pyro.distributions.von_mises.VonMises(vmexp, vmkappa)
@@ -111,7 +112,7 @@ def calc_moments(distribution):
     """
     x = torch.linspace(2, 22, 31)
     d_mean = torch.sum(x * distribution)
-    d_var = torch.sum(x ** 2 * distribution) - d_mean ** 2
+    d_var = torch.sum(distribution * (x - d_mean) ** 2) 
     
     return d_mean, torch.sqrt(d_var)
 
@@ -134,8 +135,8 @@ def fit_normal(distogram):
     
     for i in range(L):
         for j in range(L):
-            m, s = calc_moments(distogram[1:, i, j])
-            scalar = torch.max(distogram[1:, i, j]) / normal_distr(m, m, s)
+            m, s = calc_moments(distogram[:, i, j])
+            scalar = torch.max(distogram[:, i, j]) / normal_distr(m, m, s)
             params[0, i, j], params[1, i, j], params[2, i, j] = m, s, scalar
     
     return params

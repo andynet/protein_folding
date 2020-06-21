@@ -83,9 +83,9 @@ def align(pdbseq, dsspseq):
             k = 1
             x = 0 # some residues are named X in dssp data while they have normal name in pdb
             while k < len(pdbseq):
-                if k == len(pdbseq) - x:
+                if k == len(pdbseq) - 1 - x:
                     return i, i + len(pdbseq)
-                
+
                 if j == len(dsspseq):
                     break
                 if dsspseq[j] == 'X':
@@ -95,7 +95,6 @@ def align(pdbseq, dsspseq):
                 elif dsspseq[j] == pdbseq[k]:
                     j += 1
                     k += 1
-                    pass
                 else:
                     break
 
@@ -212,13 +211,13 @@ def get_output(domain, virtualcb=False):
         sec_torsions, seq = secondary_torsions(domain)  # , start, end)
         if sec_torsions is None:
             return None, None
-        
+
         if len(seq) < len(coords_list):
             print('DSSP output smaller than PDB')
             return len(seq), len(coords_list)
-        
+
         dssp_start, dssp_end = align(''.join(coords_list[:, 2]), seq)
-        
+
         if dssp_start is None:
             print('DSSP Sequence != PDB sequence')
             print(f'PDB Sequence:\n{"".join(coords_list[:, 2])}\nDSSP sequence:\n{seq}')
@@ -267,8 +266,8 @@ def outputs_seq(domain, virtualcb=False):
         for j in range(i + 1, L):
             dist_mat[i, j] = np.sqrt(np.sum((coords[i, 3:] - coords[j, 3:]) ** 2))
 
-    bins64 = np.concatenate(([0], np.linspace(2, 22, 62), [1000]))
-    bins32 = np.concatenate(([0], np.linspace(2, 22, 30), [1000]))
+    bins64 = np.concatenate(([0], np.linspace(2, 22, 62), [np.inf]))
+    bins32 = np.concatenate(([0], np.linspace(2, 22, 30), [np.inf]))
 
     dist_mat += dist_mat.T
 

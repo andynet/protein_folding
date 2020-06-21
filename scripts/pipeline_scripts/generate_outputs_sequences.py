@@ -39,12 +39,13 @@ not_generated = np.setdiff1d(domains0, generated)
 #         print(f'Iteration {i}, domain {domain} files generated')
 
 # %% FOK IT. 19675 is enough
+# brilliant description
 dssp_smaller_than_pdb = 0
 for i in range(70, len(not_generated)):
     domain = not_generated[i]
 
     d64, d32, seq, sectorsions = outputs_seq(domain, virtualcb=True)
-    
+
     if isinstance(d64, int):
         dssp_smaller_than_pdb += 1
     elif d64 is None:

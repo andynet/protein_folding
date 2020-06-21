@@ -12,10 +12,22 @@ from copy import copy
 import pickle
 import argparse
 import os
-
+import matplotlib.pyplot as plt
 
 # %%
-def NLLLoss(structure, distogram, vmphi=None, vmpsi=None, normal=False, distance_threshold=1000):
+C_vdW = 1.7
+
+def steric_repulsion(dmap):
+    sr = 0
+    d = ((C_vdW ** 2 - dmap ** 2) ** 2) / C_vdW
+    for i in range(len(dmap) - 1):
+        for j in range(i + 1, len(dmap)):
+            if dmap[i, j] < C_vdW:
+                sr += d[i, j]
+    return sr
+
+
+def NLLLoss(structure, normal=False, distance_threshold=22, steric=False):
     """
     Loss Function consisting of two potentials:
         distance potential
@@ -30,7 +42,7 @@ def NLLLoss(structure, distogram, vmphi=None, vmpsi=None, normal=False, distance
     x = torch.linspace(2, 22, 31)
     xtorsion = torch.linspace(-np.pi, np.pi, 36)
     loss = 0
-    
+        
     # DISTANCE POTENTIAL
     distance_map = structure.G()
     if normal or normal == 'True' or normal == 'T':
@@ -40,21 +52,24 @@ def NLLLoss(structure, distogram, vmphi=None, vmpsi=None, normal=False, distance
                 if mu <= distance_threshold:
                     loss += torch.log(max(torch.tensor(0.0001), 
                                       normal_distr(distance_map[i, j], mu, sigma, s)))
-        
+     
     else:  # fit cubic spline to histograms
         for i in range(len(distance_map) - 1):
             for j in range(i + 1, len(distance_map)):
                 loss += torch.log(max(torch.tensor(0.001),
-                                      interp(x, distogram[1:, i, j], min(torch.tensor(22), 
+                                      interp(x, structure.distogram[:, i, j], min(torch.tensor(22), 
                                                                          distance_map[i, j]))))
-    if vmphi is not None:
+    if structure.vmphi is not None:
         # TORSION ANGLE POTENTIAL
         for i in range(len(structure.torsion) // 2):
             # torsion angle loss phi
-            loss += vmphi[i].log_prob(structure.torsion[i])
+            loss += structure.vmphi[i].log_prob(structure.torsion[i])
             # torsion angle loss psi
-            loss += vmpsi[i].log_prob(structure.torsion[len(structure.torsion) // 2 + i])
+            loss += structure.vmpsi[i].log_prob(structure.torsion[len(structure.torsion) // 2 + i])
 
+    if steric:
+        loss -= steric_repulsion(distance_map) 
+    
     return -loss
 
 
@@ -68,7 +83,10 @@ def optimize(structure,
              gradient_scaling='sddiv',  # one of ['sddiv', 'normal', 'absmaxdiv']
              momentum=0,
              nesterov=False,
-             verbose=-1):
+             steric=False,
+             verbose=-1,
+             img_dir=None,
+             figheight=6):
     """
     Gradient Descent Algorithm for optimizing Protein Structures on restarts
     
@@ -110,7 +128,7 @@ def optimize(structure,
         if nesterov is True or nesterov == 'True' or nesterov == 'T':
             structure.torsion = (structure.torsion + momentum * V).detach().requires_grad_()
             
-        L = NLLLoss(structure, structure.distogram, structure.vmphi, structure.vmpsi, normal, distance_threshold)
+        L = NLLLoss(structure, normal, distance_threshold, steric=steric)
         
         loss_minus_th_loss = L.item() - structure.min_theoretical_loss - structure.min_angle_loss
         
@@ -144,6 +162,20 @@ def optimize(structure,
             return
         
         history.append([i, loss_minus_th_loss])
+        
+        if img_dir is not None:
+            structure.visualize_structure(figsize=(int(1.5*figheight), figheight), img_path = '{}/iter_{:04d}.png'.format(img_dir, i))
+            with torch.no_grad():
+                dmap = structure.G()
+            dmap += dmap.t()
+            
+            fig = plt.figure(figsize=(figheight, figheight))
+            plt.imshow(dmap, cmap='viridis_r')
+            plt.tight_layout()
+            plt.savefig('{}/dmap_iter_{:04d}.png'.format(img_dir, i))
+            plt.close(fig)
+            
+            structure.pdb_coords(output_dir = img_dir, filename='struct_iter_{:04d}.pdb'.format(i))
     
     return best_structure, min_loss, history
 
@@ -164,8 +196,11 @@ def optimize_restarts(
         gradient_scaling='sddiv',
         momentum=0,
         nesterov=False,
+        steric=False,
         verbose=0,
-        isdict=False):
+        isdict=False,
+        img_dir=None,
+        figheight=6):
     
     history = []
     initial_lr = lr
@@ -182,7 +217,10 @@ def optimize_restarts(
                            gradient_scaling=gradient_scaling,
                            momentum=momentum,
                            nesterov=nesterov,
-                           verbose=verbose
+                           steric=steric,
+                           verbose=verbose,
+                           img_dir=img_dir, 
+                           figheight=figheight
                           )
         lr = lr_decay * lr
         structure = s
@@ -253,3 +291,4 @@ if __name__ == '__main__':
                 f.write(f'#SBATCH -o ../../steps/garbage/{args.domain}-%j.out\n')
                 f.write(f'python3 optimize_restarts.py -d {args.domain} -dp {args.domainpath} -nd {args.normal} -rs {random_state} -o {args.outputdir}/{args.domain} -k {args.kappascalar} -i {args.iterations} -ap {args.anglepotential} -r {args.restarts} -lr {args.learningrate} -ld {args.lrdecay} -m {args.momentum} -nm {args.nesterov} -v {args.verbose}')
             os.system(f"sbatch {args.outputdir}/temp_{args.domain}/{args.domain}_{i}.sh")
+            

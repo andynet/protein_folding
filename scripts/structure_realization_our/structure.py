@@ -165,7 +165,15 @@ class Geometry_tools:
     
 
 class Structure(Geometry_tools):
-    def __init__(self, domain, domain_path=None, isdict=False, random_state=1618, kappa_scalar=1, angle_potential=False, normal=False, torsion=None):
+    def __init__(self, 
+                 domain, 
+                 domain_path=None, 
+                 isdict=False, 
+                 random_state=1618, 
+                 kappa_scalar=1, 
+                 angle_potential=False, 
+                 normal=True, 
+                 torsion=None):
         
         self.domain = domain
         self.random_state = random_state
@@ -176,12 +184,12 @@ class Structure(Geometry_tools):
                 with open(domain_path, 'rb') as f:
                     d = pickle.load(f)
 
-                distogram, phi, psi = d['distogram'], d['phi'], d['psi']
+                distogram, phi, psi = d['distogram'][1:, :, :], d['phi'], d['psi']
                 self.distogram = 0.5 * (distogram + distogram.permute((0, 2, 1)))
             else:
                 d = torch.load(domain_path)
                 L = d[0].shape[2]
-                distogram, phi, psi = d[0][0], d[2].view(1, 37, 1, L), d[3].view(1, 37, 1, L)
+                distogram, phi, psi = d[0][0, 1:, :, :], d[2].view(1, 37, 1, L), d[3].view(1, 37, 1, L)
                 self.distogram = 0.5 * (distogram + distogram.permute((0, 2, 1)))
             # remove first phi angle and last psi angle
             # necessary because the first atom we place is Nitrogen and last is Carbon-C
@@ -247,7 +255,7 @@ class Structure(Geometry_tools):
         
         # Calculate min theoretical loss
         
-    def G(self):
+    def G(self, coords=False):
         """
         Create differentiable protein geometry
         
@@ -294,7 +302,9 @@ class Structure(Geometry_tools):
                 dist_mat_atoms[i] = self.place_cbeta(backbone[(3 * i):(3 * (i + 1))])
 
             i += 1
-
+        
+        if coords:
+            return dist_mat_atoms
         # distance_map
         dist_map = torch.zeros((len(self.seq), len(self.seq)))
 
@@ -441,7 +451,7 @@ class Structure(Geometry_tools):
 
             return backbone, cbeta_coords
 
-    def visualize_structure(self, img_path=None):
+    def visualize_structure(self, figsize=None, img_path=None):
         """
         Visualizes the entire structure: backbone + C-beta atoms
 
@@ -452,7 +462,7 @@ class Structure(Geometry_tools):
         with torch.no_grad():
             backbone, cbeta_coords = self.G_full()
 
-            fig = plt.figure()
+            fig = plt.figure(figsize=figsize)
 
             entire_structure = torch.empty((len(backbone) + 2 * len(cbeta_coords), 3))
 
@@ -476,6 +486,7 @@ class Structure(Geometry_tools):
             ax.plot(coords[:, 0], coords[:, 1], coords[:, 2])
 
             if img_path is not None:
+                plt.tight_layout()
                 plt.savefig(img_path)
                 plt.close(fig)
     
@@ -502,7 +513,7 @@ class Structure(Geometry_tools):
         atom += '{:7.3f} {:7.3f} {:7.3f} {:6.3f} {:6.3f}           {}'.format(xyz[0], xyz[1], xyz[2], 1.0, 1.0, last_char)
         return atom
 
-    def pdb_coords(self, domain_start=0, output_dir=None):
+    def pdb_coords(self, domain_start=0, output_dir=None, filename=None):
         """
         Coordinates in PDB format
         
@@ -513,6 +524,9 @@ class Structure(Geometry_tools):
         Output:
             list of pdb_atom lists
         """
+        if filename is None:
+            filename = f'{self.domain}_pred.pdb'
+        
         backbone, cbeta = self.G_full()
         seq = self.seq
         
@@ -543,11 +557,11 @@ class Structure(Geometry_tools):
             bind += 3
         
         if output_dir is not None:
-            with open(f'{output_dir}/{self.domain}_pred.pdb', 'w') as f:
+            with open(f'{output_dir}/{filename}', 'w') as f:
                 f.write('HEADER ' + str(date.today()) + '\n')
                 f.write(f'TITLE Prediction of {self.domain}\n')
                 f.write(f'')
-                f.write('AUTHOR Thinking Potato\n')
+                f.write('AUTHOR Tomas Sladecek\n')
                 for i in range(len(coords_full)):
                     f.write(coords_full[i] + '\n')
                     

@@ -10,17 +10,34 @@ def get_input(wildcards):
     # global variables defined by snakemake are config, rules, checkpoints...
     templates = [
         # "{data_dir}/our_input/tensors/{domain}_X.pt",
-        "{data_dir}/our_input/Y_tensors/{domain}_Y.pt",
+        # "{data_dir}/our_input/Y_tensors/{domain}_Y.pt",
+        # "{data_dir}/our_input/Y_tensors_2020_04_30_model_93/{domain}.pred.pt",
+        # "{data_dir}/our_input/contacts/{domain}.pred.rr",
+        # "{data_dir}/our_input/contacts/{domain}.real.rr",
+        "{data_dir}/our_input/confold_out/{domain}_{t}/stage2/{domain}_model1.pdb",
     ]
     data_dir = config["data_dir"]
     # domains = glob("/faststorage/project/deeply_thinking_potato/data"
     #                "/our_input/sequences/*.fasta")
-    domains = glob("/faststorage/project/deeply_thinking_potato/data/our_input/torsion/psi/*_psi.pt")
-    domains = [x.split('/')[-1].split('_')[0] for x in domains]
+    # domains = glob(
+    #     "/faststorage/project/deeply_thinking_potato/steps/test_predictions/*.pred.pt"
+    # )
+    # domains = glob(
+    #     "/faststorage/project/deeply_thinking_potato/data/our_input/Y_tensors_2020_04_30_model_93/T*.pred.pt"
+    # )
+    domains = glob(
+        "/faststorage/project/deeply_thinking_potato/steps/casp13_predictions/*.pred.pt"
+    )
+    # domains = glob("/faststorage/project/deeply_thinking_potato/data/our_input/tensors/*_X.pt")
+    # domains = glob(f"{data_dir}/our_input/Y_tensors_2020_04_30_model_93/*.pred.pt")
+    domains = [x.split('/')[-1].split('.')[0] for x in domains]
+    types = ["pred"]
+    # types = ["pred"]
     results = []
     for template in templates:
         for domain in domains:
-            results.append(template.format(data_dir=data_dir, domain=domain))
+            for t in types:
+                results.append(template.format(data_dir=data_dir, domain=domain, t=t))
 
     return results
 
